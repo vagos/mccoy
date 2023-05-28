@@ -1,4 +1,11 @@
-# Question
+# Inital Request
+
+Medical Text
+The above paragraph refers some common symptoms of pneumonia.
+Give me a clingo script so that based on symptoms can diagnose pneumonia.
+
+
+# Chat's Answer
 
 % Symptoms of Pneumonia
 
@@ -35,6 +42,7 @@ diagnosis(pneumonia) :- symptom(cough), symptom(chest_pain), symptom(headache), 
 % Check if someone has pneumonia or not
 :- not has_pneumonia.
 
+# New Request
 
 In the clingo script that you produced before, make some changes in diagnosis rule like:
 
@@ -42,7 +50,7 @@ diagnosis(pneumonia) :- has(symptom(x)), has(symptom(y)) ...
 
 
 
-# Answer
+# Chat's Answer
 
 Certainly! Here's the updated version of the Clingo code with the diagnosis rule presented as requested:
 
