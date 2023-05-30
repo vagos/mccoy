@@ -5,6 +5,7 @@
 symptom(runny_nose).
 symptom(stuffy_nose).
 symptom(sneezing).
+symptom(continuous_sneezing).
 symptom(sore_throat).
 symptom(cough).
 symptom(headache).
@@ -12,6 +13,8 @@ symptom(fatigue).
 symptom(body_aches).
 symptom(watery_eyes).
 symptom(low_grade_fever).
+symptom(throat_irritation).
+symptom(phlegm).
 
 % Rules linking symptoms
 linked_symptom(runny_nose, stuffy_nose).
@@ -22,6 +25,10 @@ linked_symptom(cough, headache).
 linked_symptom(fatigue, body_aches).
 linked_symptom(fatigue, headache).
 linked_symptom(sore_throat, watery_eyes).
+linked_symptom(sneezing, continuous_sneezing).
+linked_symptom(cough, throat_irritation).
+linked_symptom(cough, phlegm).
+linked_symptom(headache, fatigue).
 
 has(symptom(Symptom2)) :- has(symptom(Symptom1)), linked_symptom(Symptom1, Symptom2).
 
@@ -55,4 +62,4 @@ diagnosis(common_cold) :- has(symptom(runny_nose)),
                           has(symptom(sneezing)),
                           has(symptom(headache)).
 
-:- not diagnosis(common_cold).
+:- not diagnosis(common _cold).
