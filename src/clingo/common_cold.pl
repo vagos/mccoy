@@ -30,10 +30,8 @@ linked_symptom(cough, throat_irritation).
 linked_symptom(cough, phlegm).
 linked_symptom(headache, fatigue).
 
-has(symptom(Symptom2)) :- has(symptom(Symptom1)), linked_symptom(Symptom1, Symptom2).
-
 % Diagnosis of the Common Cold
-diagnosis(common_cold) :- has(symptom(runny_nose)),
+diagnosis(commoncold) :- has(symptom(runny_nose)),
                           has(symptom(stuffy_nose)),
                           has(symptom(sneezing)),
                           has(symptom(sore_throat)),
@@ -46,20 +44,18 @@ diagnosis(common_cold) :- has(symptom(runny_nose)),
 diagnosis(sinusitis) :- has(symptom(stuffy_nose)),
                         has(symptom(headache)).
 
-diagnosis(common_cold) :- has(symptom(runny_nose)),
+diagnosis(commoncold) :- has(symptom(runny_nose)),
                           has(symptom(sneezing)),
                           has(symptom(watery_eyes)).
 
-diagnosis(common_cold) :- has(symptom(fever)),
+diagnosis(commoncold) :- has(symptom(fever)),
                           has(symptom(body_aches)),
                           has(symptom(cough)).
 
-diagnosis(common_cold) :- has(symptom(sore_throat)),
+diagnosis(commoncold) :- has(symptom(sore_throat)),
                           has(symptom(fatigue)).
 
-diagnosis(common_cold) :- has(symptom(runny_nose)),
+diagnosis(commoncold) :- has(symptom(runny_nose)),
                           has(symptom(stuffy_nose)),
                           has(symptom(sneezing)),
                           has(symptom(headache)).
-
-:- not diagnosis(common _cold).
