@@ -5,6 +5,9 @@ import xclingo
 import argparse
 import sys
 import difflib
+import os
+
+import data
 
 class Diagnosis(clorm.Predicate):
     name=clorm.ConstantField
@@ -27,13 +30,20 @@ class HasIndicator(clorm.Predicate):
     class Meta:
         name="has"
 
-def explain(symptoms):
-    # TODO: Implement this function
-    pass
+known_diseases = ["chickenpox", "pneumonia"]
 
+def explain(symptoms):
+    knowledge_base_file = "knowledge.pl"
+    data.create_knowledge_base(knowledge_base_file)
+
+    with open(knowledge_base_file, 'a') as kb_file:
+        for s in symptoms:
+            kb_file.write(f"{str(s)}.\n")
+
+    output = os.popen(f"./util/xclingo.sh {knowledge_base_file}").read()
+    return output
 
 def get_knowledge_base(n=0):
-    known_diseases = ["chickenpox", "pneumonia"]
     ctrl = clingo.Control(arguments=[f"-n {n}"], unifier=[Diagnosis, Symptom, Indicator])
     
     for d in known_diseases:
@@ -63,9 +73,9 @@ def diagnose(symptoms):
             possible_diagnosis.append(q.name)
 
         query=solution.query(HasSymptom)
-        print("Symptoms: ")
-        for q in query.all():
-            print("* ", q.name)
+        # print("Symptoms: ")
+        # for q in query.all():
+        #     print("* ", q.name)
 
     ctrl.solve(on_model=on_model)
 
@@ -109,18 +119,17 @@ def main_cli():
 
     diagnose(patient_facts)
 
-import data
-
 def get_close_word(word, words):
     close_words = difflib.get_close_matches(word, words, n=1)
     if close_words:
         return close_words[0]
     return word
 
+TESTING_DISEASE = ['pneumonia', 'chickenpox']
 
-def main():
+def test():
     patients = data.get_patients()
-    patients = [p for p in patients if p.diagnosis == "pneumonia"]
+    patients = [p for p in patients if p.diagnosis in TESTING_DISEASE]
 
     accuracy = 0
     
@@ -133,17 +142,17 @@ def main():
             # s = get_close_word(s, all_symptoms)
             patient_facts.append(HasSymptom(Symptom(s)))
         
-        print(patient_facts)
         diagnosis = diagnose(patient_facts)
-        print("Diagnosis: ", diagnosis, file=sys.stderr)
-        print("Actual Symptoms: ", p.symptoms)
+        explanation = explain(patient_facts)
+        # print("Diagnosis: ", diagnosis, file=sys.stderr)
+        # print("Actual Symptoms: ", p.symptoms)
         diagnosis = diagnosis[-1]
-        print(f"Diagnostics: {diagnosis} Real: {p.diagnosis}")
-        print("Correct" if diagnosis == p.diagnosis else "Incorrect")
+        # print(f"Diagnostics: {diagnosis} Real: {p.diagnosis}")
+        # print("Correct" if diagnosis == p.diagnosis else "Incorrect")
 
         accuracy += 1 if diagnosis == p.diagnosis else 0
 
     print(f"Accuracy: {accuracy / len(patients)}")
 
 if __name__ == '__main__':
-    main()
+    test()
