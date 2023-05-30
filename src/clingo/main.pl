@@ -8,7 +8,7 @@ indicator(i1).
 indicator(i2).
 indicator(i3).
 
-1 { add(symptom(S)) : symptom(S) } 1.
+{ add(symptom(S)) : symptom(S) }.
 
 has(symptom(S)) :- add(symptom(S)).
 
@@ -19,8 +19,19 @@ diagnosis(disease2) :-
     has(symptom(s2)),
     has(indicator(i1)).
 
-#maximize { 1, D : diagnosis(D) }.
+diagnosis(disease3) :- 
+    has(symptom(s1)),
+    has(symptom(s2)),
+    has(indicator(i1)).
+
+diagnosis(disease4) :- 
+    has(symptom(s2)).
 
 :- not diagnosis(_).
 
+#minimize { 1, S : has(S) }.
+
 %!show_trace diagnosis(D).
+
+#show diagnosis/1.
+#show has/1.
