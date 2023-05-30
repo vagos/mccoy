@@ -32,8 +32,8 @@ def get_patients():
         patients.append(Patient(symptoms, diagnosis))
     return patients
 
-def create_knowledge_base():
-    with open('knowledge_base.pl', 'w') as outfile:
+def create_knowledge_base(filename):
+    with open(filename, 'w') as outfile:
         for fname in os.listdir('clingo'):
             if fname.endswith('.pl'):
                 with open(f'clingo/{fname}') as infile:
