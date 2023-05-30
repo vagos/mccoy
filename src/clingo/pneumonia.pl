@@ -24,6 +24,9 @@ symptom(sweating).
 
 % Rules linking symptoms
 
+linked_symptom(phlegm, cough_with_mucus).
+linked_symptom(breathlessness, shortness_of_breath).
+
 % Cough with mucus can be associated with wheezing and shortness of breath
 linked_symptom(cough_with_mucus, wheezing).
 linked_symptom(cough_with_mucus, shortness_of_breath).
@@ -52,10 +55,6 @@ linked_symptom(grunting, chest_retractions).
 
 % Nasal flaring can be associated with chest retractions
 linked_symptom(nasal_flaring, chest_retractions).
-
-% Rule to infer linked symptoms
-has(symptom(Symptom2)) :- has(symptom(Symptom1)), linked_symptom(Symptom1, Symptom2).
-
 
 % Diagnosis of Pneumonia
 diagnosis(pneumonia) :- has(symptom(cough)),
