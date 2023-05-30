@@ -49,4 +49,3 @@ diagnosis(anemia) :-
   indicator(low_serum_iron),
   indicator(low_ferritin),
   indicator(high_TIBC).
-

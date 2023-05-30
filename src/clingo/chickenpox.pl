@@ -27,6 +27,3 @@ dagnosis(chickenpox) :- has(symptom(rash)),
                   has(symptom(pustules)),
                   has(symptom(scabs)),
                   has(symptom(malaise)).
-
-% Check if someone has chickenpox or not
-:- not diagnosis(chickenpox).
