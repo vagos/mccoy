@@ -6,4 +6,4 @@ Code and scripts for our work "Automatic illness prediction using Large Language
 
 # Architecture
 
-![The system's architecture.](./docs/architecture.png)
+![The system's architecture.](./docs/images/architecture.png)
