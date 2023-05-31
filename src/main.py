@@ -67,15 +67,10 @@ def diagnose(symptoms):
         solution = model.facts(atoms=True)
         query=solution.query(Diagnosis)
 
-        # print("Diagnosis: ")
         for q in query.all():
-            # print("* ", q.name)
             possible_diagnosis.append(q.name)
 
         query=solution.query(HasSymptom)
-        # print("Symptoms: ")
-        # for q in query.all():
-        #     print("* ", q.name)
 
     ctrl.solve(on_model=on_model)
 
@@ -139,16 +134,13 @@ def test():
     for p in patients:
         patient_facts = []
         for s in p.symptoms:
-            # s = get_close_word(s, all_symptoms)
+            # s = get_close_word(s, all_symptoms) # Sometimes makes incorrect predictions, will fix.
             patient_facts.append(HasSymptom(Symptom(s)))
         
         diagnosis = diagnose(patient_facts)
         explanation = explain(patient_facts)
-        # print("Diagnosis: ", diagnosis, file=sys.stderr)
-        # print("Actual Symptoms: ", p.symptoms)
         diagnosis = diagnosis[-1]
-        # print(f"Diagnostics: {diagnosis} Real: {p.diagnosis}")
-        # print("Correct" if diagnosis == p.diagnosis else "Incorrect")
+        print(f"Diagnostics: {diagnosis} Real: {p.diagnosis}")
 
         accuracy += 1 if diagnosis == p.diagnosis else 0
 
