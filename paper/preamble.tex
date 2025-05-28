@@ -1,0 +1,137 @@
+\usepackage{datetime}
+\usepackage{wrapfig}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[acronym]{glossaries}
+\usepackage{glossaries-polyglossia}
+\usepackage[nottoc]{tocbibind}
+\usepackage{siunitx}
+\usepackage{subcaption}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{cite}
+\usepackage{subfiles}
+\usepackage{amsmath}
+\usepackage{array,tabularx}
+\usepackage{chngcntr}
+\usepackage{afterpage}
+\usepackage{ulem}
+\usepackage{polyglossia}
+\usepackage{fontspec}
+\usepackage{hyperref}
+\usepackage{dirtytalk}
+\usepackage{algorithm2e}
+\usepackage{enumitem,amssymb}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{formal-grammar}
+\usepackage{varwidth}
+\usepackage{fmtcount}
+\usepackage{tikz}
+\usepackage{tikzpeople}
+\usepackage{array}
+\usepackage[framemethod=tikz]{mdframed} % Allows defining custom boxed/framed environments
+\usepackage{cleveref}
+\usepackage{epigraph}
+\usepackage{microtype}
+\usepackage{dirtytalk}
+
+\usetikzlibrary{trees}
+\usetikzlibrary{fit}
+\usetikzlibrary{shapes}
+\usetikzlibrary{arrows.meta, positioning, shadows}
+\usetikzlibrary{chains,shapes.multipart}
+\usetikzlibrary{external}
+\usetikzlibrary{matrix}
+
+\tikzstyle{rect} = [rectangle,fill=white, text centered]
+\tikzstyle{database} = [draw, cylinder, shape border rotate = 90, aspect = 0.2]
+\tikzstyle{thick-arrow} = [->, thick]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\tikzstyle{arrow-small} = [->,>=stealth]
+\tikzstyle{simple-rect} = [rectangle, text centered, draw = black, inner sep=4mm]
+
+\tikzset{
+    doc/.style={draw, minimum height=4em, minimum width=3em, 
+                fill=white, 
+                double copy shadow={shadow xshift=4pt, 
+                             shadow yshift=4pt, fill=white, draw}}
+}
+
+\tikzset{
+    dcs/.style = {double copy shadow},
+}
+
+\setmainfont[Mapping=tex-text]{CMU Serif}
+\setsansfont[Mapping=tex-text]{CMU Sans Serif}
+\setmonofont{CMU Typewriter Text}
+
+\setotherlanguage[variant=british]{english}
+\setmainlanguage[]{greek}
+
+\hypersetup{
+    colorlinks=true,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+\hypersetup{linkcolor=black}
+
+\newcommand{\src}[1]{\texttt{#1}}
+
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true, captionpos=b}
+
+% MD Frames
+
+\mdfdefinestyle{commandline}{
+	leftmargin=10pt,
+	rightmargin=10pt,
+	innerleftmargin=15pt,
+	middlelinecolor=black!50!white,
+	middlelinewidth=2pt,
+	frametitlerule=false,
+	backgroundcolor=black!5!white,
+	frametitle={LLM Output},
+	frametitlefont={\normalfont\sffamily\color{white}\hspace{-1em}},
+	frametitlebackgroundcolor=black!50!white,
+	nobreak,
+	singleextra={%
+    }
+}
+
+% Define a custom environment for command-line snapshots
+\newenvironment{commandline}{
+	\medskip
+	\begin{mdframed}[style=commandline]
+}{
+	\end{mdframed}
+	\medskip
+}
+
+\mdfdefinestyle{warning}{
+	topline=false, bottomline=false,
+	leftline=false, rightline=false,
+	nobreak,
+	singleextra={%
+		\draw(P-|O)++(-0.5em,0)node(tmp1){};
+		\draw(P-|O)++(0.5em,0)node(tmp2){};
+		\fill[black,rotate around={45:(P-|O)}](tmp1)rectangle(tmp2);
+		\node at(P-|O){\color{white}\scriptsize\bf ?};
+		\draw[very thick](P-|O)++(0,-1em)--(O);%--(O-|P);
+	}
+}
+
+% Define a custom environment for warning text
+\newenvironment{prompt}[1][Prompt:]{ % Set the default warning to "Warning:"
+	\medskip
+	\begin{mdframed}[style=warning]
+		\noindent{\textbf{#1}}
+}{
+	\end{mdframed}
+}
+
+\renewcommand{\lstlistingname}{Καταχώριση}
