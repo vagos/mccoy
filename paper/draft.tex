@@ -119,127 +119,52 @@
 
 \renewcommand{\lstlistingname}{Καταχώριση}
 
-\title{Αυτόματη διάγνωση ασθενειών με χρήση Μεγάλων Γλωσσικών Μοντέλων και Answer Set Programming}
-\author{Ιωάννα Γέμου\thanks{Τμήμα Ηλεκτρολόγων Μηχανικών και Τεχνολογίας Υπολογιστών, Πανεπιστήμιο Πατρών} \\ \src{ioannagemou@upnet.gr} \and Ευάγγελος Λάμπρου\footnotemark[1] \\ \src{e.lamprou@upnet.gr}}
+\title{Automatic Disease Diagnosis Using Large Language Models and Answer Set Programming}
+\author{Ioanna Gemou\thanks{Department of Electrical and Computer Engineering, University of Patras} \\ \src{ioannagemou@upnet.gr} \and Evangelos Lamprou\footnotemark[1] \\ \src{e.lamprou@upnet.gr}}
 
 \begin{document}
 
 \maketitle
-\tableofcontents
-\newpage
-\section{Περίληψη}
-Η ανάπτυξη αυτόματων συστημάτων πρόβλεψης ασθενειών έχει κρίσιμη σημασία για τη βελτίωση της ανθρώπινης υγείας και την υποστήριξη των ιατρών στην ακριβή διάγνωση και αντιμετώπιση των ασθενειών. Η ακριβής διάγνωση είναι κρίσιμη για την έγκαιρη αντιμετώπιση και αποτελεσματική θεραπεία, ενώ μπορεί επίσης να συμβάλει στην αποφυγή περαιτέρω επιπλοκών και επιβαρυντικών ιατρικών διαδικασιών. 
-Η συμβολική τεχνητή νοημοσύνη έχει ξαναεφαρμοστεί στο πεδίο της ιατρικής \cite{Alviano_2020}. Ωστόσο,
-εφαρμογή πάντα ήταν περιορισμένη λόγω των σύνθετων βάσεων γνώσης που θα έπρεπε να αναπτυχθούν για τη λειτουργία 
-αυτών των συστημάτων.
-Η προτεινόμενη μέθοδος, η οποία συνδυάζει τα Large Language Models και το Answer Set Programming (ASP), αποτελεί ένα ισχυρό εργαλείο, καθώς παρέχει ένα αξιόπιστο και γρήγορο μέσο δημιουργίας μιας βάσης γνώσης η οποία 
-στη συνέχεια μπορεί να χρησιμοποιηθεί για την πρόβλεψη ασθενειών.
+\section{Abstract}
+The development of automatic disease prediction systems is critically important for improving human health and supporting physicians in accurate diagnosis and treatment. Accurate diagnosis is essential for timely intervention and effective therapy, and it can also help prevent further complications and burdensome medical procedures.
 
+Symbolic artificial intelligence has previously been applied in the medical domain \cite{Alviano_2020}. However, its adoption has been limited due to the complex knowledge bases required for such systems to operate.
 
+The proposed method, which combines Large Language Models (LLMs) with Answer Set Programming (ASP), offers a powerful approach by providing a reliable and efficient means of generating a knowledge base that can then be used for disease prediction.
 
-Η καινοτομία της προτεινόμενης μεθόδου έγκειται στον συνδυασμό των δύο μεθοδολογιών. Τα Large Language Models μπορούν να κωδικοποιήσουν την ιατρική βιβλιογραφία 
-σε κώδικα ASP με αξιοσημείωτη ακρίβεια και σύνθετη κατανόηση, ενώ το ASP παρέχει τον συλλογισμό και την επεξηγηματικότητά του. Ο συνδυασμός αυτών των δύο προσεγγίσεων επιτρέπει την ανάπτυξη ενός ισχυρού συστήματος πρόβλεψης ασθενειών που συνδυάζει την \textbf{ακρίβεια και την ευφυΐα των γλωσσικών μοντέλων} με την \textbf{επεξηγηματικότητα και την αποδοτικότητα του Answer Set Programming}.
+The novelty of our method lies in the combination of these two paradigms. LLMs are capable of encoding medical literature into ASP code with remarkable accuracy and deep comprehension, while ASP contributes structured reasoning and explainability. This combination enables the development of a robust disease prediction system that integrates the \textbf{accuracy and intelligence of language models} with the \textbf{explainability and efficiency of Answer Set Programming}.
 
-Η μέθοδός μας φαίνεται να έχει υποσχόμενα αποτελέσματα πάνω στο σύνολο των δεδομένων ασθενών, στο οποίο
-την εφαρμόσαμε.
+Our method demonstrates promising results on the patient dataset to which it was applied.
 
-
-
-
-
-\section{Ανασκόπηση Βιβλιογραφίας}
+\section{Literature Review}
 
 \subsection{Large Language Models}
 
-Τα μεγάλα γλωσσικά μοντέλα \cite{zhao2023survey} είναι προηγμένα υπολογιστικά μοντέλα που έχουν σχεδιαστεί για να κατανοούν και να δημιουργούν ανθρώπινη γλώσσα. Αυτά τα μοντέλα, που αναπτύχθηκαν χρησιμοποιώντας εξελιγμένες τεχνικές μηχανικής μάθησης, έχουν τη δυνατότητα να επεξεργάζονται και να δημιουργούν κείμενο με τρόπο που μοιάζει πολύ με τα πρότυπα ανθρώπινης γλώσσας.
+Large language models \cite{zhao2023survey} are advanced computational models designed to understand and generate human language. These models, developed using sophisticated machine learning techniques, have the ability to process and generate text in a way that closely resembles human language patterns.
 
-Μεγάλα γλωσσικά μοντέλα, όπως η αρχιτεκτονική \textit{GPT-4} \cite{openai2023gpt4}, εκπαιδεύονται σε τεράστιες ποσότητες δεδομένων κειμένου, γεγονός που τους επιτρέπει να αποκτούν γνώση σε διάφορους τομείς και θέματα. Αυτά τα μοντέλα χρησιμοποιούν αλγόριθμους βαθιάς μάθησης (deep learning) \cite{Sarker2021} και ειδικά δίκτυα μετασχηματιστών (transformer networks) \cite{Dosovitskiy2020}, για την ανάλυση και την κατανόηση των σχέσεων μεταξύ λέξεων, φράσεων και προτάσεων. Καταγράφοντας μοτίβα και δομές στα δεδομένα εκπαίδευσης, αυτά τα μοντέλα μπορούν να δημιουργήσουν συνεκτικές και συναφείς
-απαντήσεις με βάση δοθέντα prompts.
+Large language models, such as the \textit{GPT-4} architecture \cite{openai2023gpt4}, are trained on vast amounts of text data, allowing them to acquire knowledge across various fields and topics. These models use deep learning algorithms \cite{Sarker2021} and specifically transformer networks \cite{Dosovitskiy2020} to analyze and understand the relationships between words, phrases, and sentences. By capturing patterns and structures in the training data, these models can generate coherent and relevant responses based on given prompts.
 
-Tα μοντέλα ονομάζονται \say{μεγάλα} επειδή έχουν δισεκατομμύρια παραμέτρους που διαμορφώνουν τις αποκρίσεις τους. Η βασική προϋπόθεση ενός γλωσσικού μοντέλου είναι η ικανότητά του να προβλέπει την επόμενη λέξη (που ονομάζεται token) με βάση το κείμενο που έχει παρατηρήσει μέχρι τώρα, δηλαδή σύμφωνα με τα συμφραζόμενα.
+The models are referred to as "large" because they have billions of parameters that shape their responses. The basic premise of a language model is its ability to predict the next word (referred to as a token) based on the text it has observed so far, according to the context.
 
+Large language models possess the remarkable ability to transform text from one form to another, making them powerful tools for various language processing tasks. This characteristic underpins the idea of this work, as a significant part we deal with is the appropriate encoding of medical literature. Below we list some examples of the use of large language models \cite{Paranjape2023}:
 
-Τα μεγάλα γλωσσικά μοντέλα διαθέτουν την αξιοσημείωτη ικανότητα να μετασχηματίζουν κείμενο από τη μια μορφή στην άλλη, καθιστώντας τα ισχυρά εργαλεία για διάφορες εργασίες επεξεργασίας γλώσσας. 
-Πάνω σε αυτό το χαρακτηριστικό τους, βασίζεται και η ιδέα αυτής της εργασίας, αφού ένα πολύ σημαντικό κομμάτι που πραγματευόμαστε είναι η κατάλληλη κωδικοποίηση της ιατρικής βιβλιογραφίας.
-Παρακάτω αναφέρουμε κάποια παραδείγματα χρήσης των μεγάλων γλωσσικών μοντέλων \cite{Paranjape2023}: 
+\subsection{Difficulties in Implementing LLMs}
 
-\begin{itemize}
-    \item Δημιουργία κειμένου που είναι συναφές και συνεκτικό με βάση τα συμφραζόμενα
-    \item Μετάφραση Γλώσσας
-    \item Σύνοψη / Περίληψη Κειμένου
-    \item  Απάντηση σε ερωτήσεις
-    \item Παραγωγή κειμένου με βάση συγκεκριμένων κανόνων που τους παρέχονται
-\end{itemize}
+Large language models (LLMs) are not without errors \cite{Raj2023}, \cite{Ruis2023}. They can occasionally produce incorrect or biased responses that reflect the biases inherent in the training data. Efforts are being made to mitigate these issues through data preprocessing techniques and fine-tuning.
 
-Ο θεμέλιος λίθος των Μεγάλων Γλωσσικών μοντέλων είναι οι \textbf{transformers}.
-Οι transformers \cite{Vaswani2017} επί του παρόντος θεωρούνται μία από τις πιο προηγμένες και ισχυρές κατηγορίες μοντέλων. Συνέβαλαν καθοριστικά στην επίτευξη σημαντικών ανακαλύψεων στη μηχανική μάθηση, με αποτέλεσμα ορισμένοι να τους αναφέρουν ως \say{transformers AI}. Aυτά τα μοντέλα οδηγούν σε μια θεμελιώδη αλλαγή στον τομέα της τεχνητής νοημοσύνης \cite{Bommasani2021}.
-To σχήμα \ref{fig:transformers} απεικονίζει τη δομή του transformer, ο οποίος περιλαμβάνει δύο διακριτά μέρη, την κωδικοποίηση και την αποκωδικοποίηση.
-
-\begin{figure}[htb]
-    \centering
-    \includegraphics[width=0.7\textwidth]{assets/transformers_architecture.png}
-    \caption{Αρχιτεκτονική του μοντέλου transformer \cite{Vaswani2017}.}
-    \label{fig:transformers}
-\end{figure}
-
-\subsubsection{Inputs and Input Embeddings}
-
-Tο θεμελιώδες συστατικό του
-transformer, ο μηχανισμός \say{προσοχής} είναι εμπνευσμένος από την έννοια της συνειδητής προσοχής στους ζωντανούς οργανισμούς \cite{Vaswani2017}.
-Αυτός ο μηχανισμός επιτρέπει στο δίκτυο να αποδίδει μεγαλύτερη σημασία σε κρίσιμα μέρη των δεδομένων και λιγότερη σημασία σε αυτά που είναι λιγότερο σχετικά. Αν και η απλούστερη μορφή αυτής της συνάρτησης είναι ένα σταθμισμένο άθροισμα των τιμών εισόδου, ο μηχανισμός προσοχής στον μετασχηματιστή είναι πιο περίπλοκος και περιλαμβάνει πολλαπλούς μετασχηματισμούς για τον υπολογισμό των βαρών προσοχής μεταξύ διαφορετικών τμημάτων της εισόδου.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Τα τμήματα εισόδου από τον χρήστη είναι είσοδοι για τα μοντέλα μηχανικής μάθησης. Ωστόσο, τα μοντέλα κατανοούν μόνο αριθμούς, όχι κείμενο, επομένως αυτές οι είσοδοι πρέπει να μετατραπούν σε μια αριθμητική μορφή που ονομάζεται \textbf{input embeddings}. Tα input embeddings αντιπροσωπεύουν λέξεις ως αριθμούς, τους οποίους μπορούν στη συνέχεια να επεξεργαστούν τα μοντέλα μηχανικής μάθησης. Τα embeddings είναι σαν ένα λεξικό, το οποίο βοηθά το μοντέλο να κατανοήσει τη σημασία των λέξεων, μέσω της τοποθέτησής τους σε έναν μαθηματικό χώρο όπου παρόμοιες λέξεις βρίσκονται η μία κοντά στην άλλη. Κατά τη διάρκεια της εκπαίδευσης, το μοντέλο μαθαίνει πώς να δημιουργεί τα embeddings, έτσι ώστε παρόμοια διανύσματα να αντιπροσωπεύουν λέξεις με παρόμοια σημασία.
-
-\subsubsection{Positional Encodings}
-
-Στην επεξεργασία φυσικής γλώσσας, η σειρά των λέξεων σε μια πρόταση είναι κρίσιμη για τον προσδιορισμό του νοήματος της πρότασης. Ωστόσο, τα παραδοσιακά μοντέλα μηχανικής μάθησης, όπως τα νευρωνικά δίκτυα, δεν κατανοούν εγγενώς τη σειρά των εισόδων. Για την αντιμετώπιση αυτής της πρόκλησης, η κωδικοποίηση θέσης μπορεί να χρησιμοποιηθεί για την κωδικοποίηση της θέσης κάθε λέξης σε μία πρόταση. Η κωδικοποίηση αυτή τροφοδοτείται στο μοντέλο Transformer, μαζί με τα input embeddings. Με την ενσωμάτωση της κωδικοποίησης θέσης στην αρχιτεκτονική του Transformer, το μοντέλο μπορεί να κατανοήσει πιο αποτελεσματικά τη σειρά των λέξεων σε μια πρόταση και να δημιουργήσει γραμματικά σωστά και σημασιολογικά νόημα.
-Το \say{γραμματικά σωστό} αποτέλεσμα μπορεί να σημαίνει και την παραγωγή κώδικα ο οποίος είναι 
-σύμφωνος με τους κάνόνες μιας γλώσσας προγραμματισμού. 
-
-\subsubsection{Encoder}
-
-Ο κωδικοποιητής (encoder) είναι μέρος του νευρωνικού δικτύου που επεξεργάζεται το κείμενο εισόδου και δημιουργεί μια σειρά από κρυφές καταστάσεις που καταγράφουν το νόημα του κειμένου. Ο κωδικοποιητής διαμορφώνει πρώτα το κείμενο εισόδου σε μια ακολουθία tokens, π.χ. μεμονωμένες λέξεις.
-
-\subsubsection{Decoder}
-Ο αποκωδικοποιητής (decoder) είναι μέρος του μοντέλου που δημιουργεί την ακολουθία εξόδου με βάση την κωδικοποιημένη ακολουθία εισόδου. Κατά τη διάρκεια της εκπαίδευσης, ο αποκωδικοποιητής μαθαίνει πώς να \say{μαντεύει} την επόμενη λέξη κοιτάζοντας τις λέξεις πριν από αυτήν. Για παράδειγμα, ο αποκωδικοποιητής σε \textit{GPT} δημιουργεί κείμενο φυσικής γλώσσας με βάση την ακολουθία εισόδου και το περιβάλλον που μαθαίνει ο κωδικοποιητής. Στους transformers χρησιμοποιούνται πολλαπλά στρώματα αποκωδικοποιητών.
-
-\subsection{Δυσκολίες στην εφαρμογή των LLMs}
-
-Τα μεγάλα γλωσσικά μοντέλα δεν είναι αλάνθαστα \cite{Raj2023}, \cite{Ruis2023}. Μπορούν περιστασιακά να παράγουν λανθασμένες ή μεροληπτικές απαντήσεις, αντανακλώντας τις προκαταλήψεις που υπάρχουν στα δεδομένα εκπαίδευσης. Καταβάλλονται προσπάθειες για τον μετριασμό αυτών των ζητημάτων μέσω τεχνικών προεπεξεργασίας δεδομένων και fine-tuning.
-
-Συνολικά, τα μεγάλα γλωσσικά μοντέλα έχουν επιδείξει τεράστιες δυνατότητες σε ένα ευρύ φάσμα εφαρμογών, συμπεριλαμβανομένης της κατανόησης φυσικής γλώσσας, της δημιουργίας περιεχομένου και της αλληλεπίδρασης ανθρώπου-υπολογιστή. Η συνεχής έρευνα και ανάπτυξη σε αυτόν τον τομέα υπόσχεται περαιτέρω ενίσχυση αυτών των μοντέλων και των εφαρμογών τους σε διάφορους τομείς, συμβάλλοντας στην πρόοδο των τεχνολογιών γλωσσικής επεξεργασίας και επικοινωνίας.
+Overall, large language models have demonstrated tremendous potential across a wide range of applications, including natural language understanding, content creation, and human-computer interaction. Ongoing research and development in this field promise further enhancement of these models and their applications across various domains, contributing to the advancement of language processing and communication technologies.
 
 \subsection{Answer Set Programming}
-To Answer Set Programming (ASP) \cite{Eiter2009} είναι μια δηλωτική μέθοδος επίλυσης προβλημάτων που βασίζεται στον Λογικό Προγραμματισμό και τη Μη Μονοτονική Συλλογιστική.  
-Στην εργασία \cite{Gelfond2000} επισημοποιήθηκε αρχικά η σημασιολογία των σταθερών μοντέλων και η βασική γλώσσα του ASP.
 
-Ο προγραμματισμός με χρήση αυτής της προσέγγισης γίνεται σε μια οικογένεια γλωσσών που ονομάζεται ορισμένες φορές \textit{AnsProlog} \cite{Gelfond2002}.
+Answer Set Programming (ASP) \cite{Eiter2009} is a declarative problem-solving approach based on Logic Programming and Non-Monotonic Reasoning. The semantics of stable models and the basic language of ASP were initially formalized in the work \cite{Gelfond2000}.
 
-Η ιδέα πίσω από το ASP είναι να μοντελοποιηθεί ένα πρόβλημα ως ένα σύνολο κανόνων και δεδομένων, και στη συνέχεια να χρησιμοποιηθεί ένας επίλυτης για να βρεθεί μια λύση για το πρόβλημα. Οι λύσεις παριστάνονται από σταθερά μοντέλα ή σύνολα απαντήσεων. Οι κανόνες, τα δεδομένα και οι περιορισμοί που περιγράφουν το πρόβλημα αποτελούν τα στοιχεία του προγράμματος. Στη συνέχεια, το πρόγραμμα δίνεται σε έναν επίλυτη που θα βρει μία ή περισσότερες λύσεις. 
+Programming with this approach is done in a family of languages sometimes referred to as \textit{AnsProlog} \cite{Gelfond2002}.
 
-Στον παραδοσιακό προγραμματισμό, η μετάβαση από ένα πρόβλημα σε μια λύση προϋποθέτει την απόλυτη κατανόηση του δεδομένου προβλήματος από τον προγραμματιστή, και έπειτα την παραγωγή ενός προγράμματος, στο οποίο όταν δοθεί ένα instance του προβλήματος θα παράγει το σωστό αποτέλεσμα, τα οποίο στη συνέχεια θα ερμηνευτεί ως λύση.
+The idea behind ASP is to model a problem as a set of rules and data, and then use a solver to find a solution to the problem. Solutions are represented by stable models or answer sets. The rules, data, and constraints that describe the problem are the elements of the program. Subsequently, the program is given to a solver that will find one or more solutions.
 
-Στο ASP, η μετάβαση από τη δήλωση προβλήματος σε ένα σύνολο λύσεων περιλαμβάνει τα ακόλουθα βήματα \cite{Gebser2013}
-(εικόνα \ref{fig:asp-solving}):
+In traditional programming, transitioning from a problem to a solution requires the programmer's thorough understanding of the given problem, followed by the creation of a program that will produce the correct output when provided with an instance of the problem, which will then be interpreted as the solution.
+
+In ASP, the transition from problem statement to a set of solutions involves the following steps \cite{Gebser2013}~(\cref{fig:asp-solving}):
 
 \begin{figure}[htb]
     \begin{center}
@@ -264,39 +189,31 @@ To Answer Set Programming (ASP) \cite{Eiter2009} είναι μια δηλωτι�
         \node[draw, dotted, fit=(grounder) (solver), inner sep=4mm, label=above:{Solving}] {};
 \end{tikzpicture}
     \end{center}
-    \caption{Η επίλυση ενός προβλήματος με χρήση ASP.}
+		\caption{Solving a problem using ASP.}
     \label{fig:asp-solving}
 \end{figure}
 
-
-
 \begin{itemize}
-    \item \textbf{Modeling}: Το πρόβλημα μοντελοποιείται σε γλώσσα ASP.
-    \item \textbf{Grounding}: Ένας grounder (π.χ. gringo) μετατρέπει το πρόγραμμα σε ένα σύνολο βασικών κανόνων και δεδομένων.
-    \item \textbf{Solving}: Ένας επιλυτής (π.χ. clasp) βρίσκει μια λύση στο πρόβλημα υπολογίζοντας το σύνολο των σταθερών μοντέλων (σύνολα απαντήσεων).
+    \item \textbf{Modeling}: The problem is modeled using ASP (Answer Set Programming) language.
+    \item \textbf{Grounding}: A grounder (e.g., gringo) converts the program into a set of basic rules and facts.
+    \item \textbf{Solving}: A solver (e.g., clasp) finds a solution to the problem by computing the set of stable models (answer sets).
 \end{itemize}
 
+Several solvers for ASP have been developed, such as DLV \cite{Xia2020}. In this work, we will apply the ASP system clingo \cite{Gebser2014}, which combines the grounder gringo with the clasp solver \cite{Holldobler2014} into a single application, also providing a powerful Python API for integrating the solver into other applications.
 
-Έχουν αναπτυχθεί αρκετοί λύτες για ASP όπως το DLV \cite{Xia2020}. Σε αυτή την εργασία, θα εφαρμόσουμε το σύστημα ASP clingo \cite{Gebser2014} το οποίο συνδυάζει τον grounder gringo με τον clasp solver\cite{Holldobler2014} σε μια ενιαία εφαρμογή, παρέχοντας επίσης ένα ισχυρό Python API για την ενσωμάτωση του solver σε άλλες εφαρμογές.
-
-
-\subsection{Χρήση του ASP στην διάγνωση ασθενειών}
-Το Answer Set Programming (ASP) προσφέρει μια ισχυρή μέθοδο για την αναπαράσταση της ιατρικής γνώσης με δηλωτικό και λογικό τρόπο. Ακολουθούν ορισμένες μέθοδοι ASP που χρησιμοποιούνται συνήθως στην αναπαράσταση ιατρικής γνώσης \cite{Vinarti2019}:
+\subsection{Use of ASP in Disease Diagnosis}
+Answer Set Programming (ASP) offers a powerful method for representing medical knowledge in a declarative and logical manner. Below are some common ASP methods used in the representation of medical knowledge \cite{Vinarti2019}:
 
 \begin{itemize}
-    \item \textbf{Αναπαράσταση βάσει κανόνων}: Το ASP επιτρέπει την αναπαράσταση της ιατρικής γνώσης ως κανόνων με τη μορφή λογικών δηλώσεων. Αυτοί οι κανόνες ορίζουν σχέσεις μεταξύ ιατρικών οντοτήτων όπως συμπτώματα, ασθένειες, θεραπείες και δεδομένα ασθενών. Για παράδειγμα, ένας κανόνας θα μπορούσε να αναφέρει ότι εάν ένας ασθενής εμφανίζει συγκεκριμένα συμπτώματα, υποδηλώνει την παρουσία ή την απουσία ορισμένων ασθενειών. 
-
-    \item \textbf{Κατασκευή Γνωσιακής Βάσης}: Το ASP παρέχει ένα πλαίσιο για την κατασκευή μιας βάσης γνώσεων που συλλαμβάνει την ιατρική γνώση. Η βάση γνώσεων αποτελείται από γεγονότα, κανόνες και περιορισμούς που καθορίζουν τις πληροφορίες και τους περιορισμούς που σχετίζονται με την ιατρική διάγνωση και θεραπεία. Μπορεί να περιλαμβάνει πληροφορίες σχετικά με τις σχέσεις ασθένειας-συμπτωμάτων, διαγνωστικά κριτήρια, κατευθυντήριες γραμμές θεραπείας και δεδομένα για τον ασθενή.
-
-    
+    \item \textbf{Rule-Based Representation}: ASP allows for the representation of medical knowledge as rules in the form of logical statements. These rules define relationships between medical entities such as symptoms, diseases, treatments, and patient data. For example, a rule could state that if a patient exhibits specific symptoms, it indicates the presence or absence of certain diseases.
+    \item \textbf{Knowledge Base Construction}: ASP provides a framework for constructing a knowledge base that captures medical knowledge. The knowledge base consists of facts, rules, and constraints that define the information and limitations related to medical diagnosis and treatment. It may include information about disease-symptom relationships, diagnostic criteria, treatment guidelines, and patient data.
 \end{itemize}
 
-Στην εργασία \cite{Erdem2011} εισήχθησαν νέες μέθοδοι για αποτελεσματικό χειρισμό σύνθετων ερωτημάτων στο πλαίσιο βιοϊατρικών οντολογιών και βάσεων δεδομένων, με έμφαση στην εξαγωγή σχετικών πληροφοριών από αυτούς τους πόρους γνώσης. Aυτές οι μέθοδοι εφαρμόστηκαν για την αντιμετώπιση απαιτητικών ερωτημάτων στον τομέα της ανακάλυψης φαρμάκων, χρησιμοποιώντας βιολογικές βάσεις δεδομένων σε συνδυασμό με συνοπτικές εξηγήσεις για πολύπλοκα ερωτήματα που σχετίζονται με διαδικασίες ανακάλυψης φαρμάκων.
+In the work \cite{Erdem2011}, new methods were introduced for effectively handling complex queries within the context of biomedical ontologies and databases, with an emphasis on extracting relevant information from these knowledge resources. These methods were applied to address demanding queries in the field of drug discovery, using biological databases in conjunction with concise explanations for complex queries related to drug discovery processes.
 
+\section{Methodology}
 
-\section{Μεθοδολογία}
-
-\subsection{Αρχιτεκτονική}
+\subsection{Architecture}
 
 \begin{figure}[!h]
 \begin{center}
@@ -318,33 +235,32 @@ To Answer Set Programming (ASP) \cite{Eiter2009} είναι μια δηλωτι�
 
 \end{tikzpicture}
 \end{center}
-    \caption{Η διαδικασία της διάγνωσης με τη χρήση της προτεινόμενης μεθόδου.
-    Ιατρική βιβλιογραφία, με χρήση ενός μεγάλου γλωσσικού μοντέλου, μετατρέπεται σε ένα πρόγραμμα ASP.
-    Στη συνέχεια, το πρόγραμμα αυτό εκτελείται από έναν ASP solver, ο οποίος παράγει την τελική διάγνωση
-    με βάση τα δεδομένα για τον εκάστοτε ασθενή.}
+\caption{The diagnostic process using the proposed method. Medical literature,
+	through the use of a large language model, is transformed into an ASP
+	program. Subsequently, this program is executed by an ASP solver, which
+	produces the final diagnosis based on the data of each patient.}
     \label{fig:architecture}
 \end{figure}
 
-Σκοπός μας είναι η εξαγωγή μίας βάσης γνώμης μέσα από αδώμητο κείμενο \cite{ré2014feature}.
-Η αρχιτεκτονική μας (σχήμα \ref{fig:architecture}) περιλαμβάνει τα εξής στάδια
+Our goal is to extract a knowledge base from unstructured text \cite{ré2014feature}. Our architecture (Figure \ref{fig:architecture}) includes the following stages:
 
-\begin{enumerate}
-    \item Συλλογή ιατρικής βιβλιογραφίας σχετική με τις εξεταζόμενες ασθένειες/παθήσεις.
-    \item Κατασκευή κατάλληλου prompt για την μετατροπή ιατρικής βιβλιογραφίας σε κώδικα ASP.
-    \item Προσθήκη του παραγώμενου ASP κώδικα από το μεγάλο μοντέλο γλώσσας στη βάση γνώσης.
-    \item Προσθήκη σχετικών δεδομένων του ασθενή (συμπτώματα, αποτελέσματα ιατρικών εξετάσεων) στη βάση γνώσης.
-    \item Παραγωγή της τελικής διάγνωσης (ή σύνολο πιθανών διαγνώσεων) ως answer set(s), αφού ο solver συλλογιστεί 
-          πάνω στη τελική βάση γνώσης.
-\end{enumerate}
+\begin{itemize}
+	\item Collecting medical literature related to the diseases/conditions under examination.
+	\item Creating an appropriate prompt for converting medical literature into ASP code.
+	\item Adding the ASP code generated by the large language model to the knowledge base.
+	\item Adding relevant patient data (symptoms, medical examination results) to the knowledge base.
+	\item Producing the final diagnosis (or set of possible diagnoses) as answer set(s), after the solver reasons over the final knowledge base.
+\end{itemize}
 
-\subsection{Κατασκευή Prompt}
+\subsection{Prompt Construction}
 
-Τα μεγάλα γλωσσικά μοντέλα, παρά των υψηλών δυνατοτήτων τους στην εκτέλεση οδηγιών, ακόμα 
-έχουν χαμηλή ελεγξιμότητα \cite{bowman2023things}.
-Έτσι, έχει προκύψει μία σχετικά νέα μεθοδολογία \say{προγραμματισμού} γνωστή ως prompt engineering \cite{liu2021pretrain, promptingguidePromptEngineering}.
-Προκειμένου να μετατρέψουμε την ιατρική βιβλιογραφία σε κώδικα
-κατάλληλο για την εκτέλεσή του σε επιλυτή ASP έπρεπε να κατασκευάσουμε 
-ποιοτικά prompts ώστε ο παραγώμενος κώδικας να βρίσκεται στην επιθυμητή μορφή (σχήμα \ref{fig:bad-prompt}, σχήμα \ref{fig:good-prompt}).
+Despite their high capabilities in executing instructions, large language
+models still have low reliability \cite{bowman2023things}. Thus, a relatively
+new programming methodology known as prompt engineering has emerged
+\cite{liu2021pretrain, promptingguidePromptEngineering}. In order to convert
+medical literature into code suitable for execution in an ASP solver, we had to
+construct quality prompts so that the generated code is in the desired form
+(Figure \ref{fig:bad-prompt}, Figure \ref{fig:good-prompt}).
 
 \begin{figure}[!h]
 \centering
@@ -373,7 +289,7 @@ diagnosis(pneumonia) :- symptom(cough),
 \end{verbatim}
 \end{commandline}
 
-\caption{Ένα απλό prompt μέσω του οποίου δεν πέρνουμε ικανοποιητικά αποτελέσματα.}
+\caption{A simple prompt that does not yield satisfactory results.}
 \label{fig:bad-prompt}
 \end{figure}
 
@@ -418,26 +334,26 @@ diagnosis(pneumonia) :- has(symptom(cough_with_mucus)),
 ...
 \end{verbatim}
 \end{commandline}
-\caption{Δίνοντας αναλυτικότερες πληροφορίες μπορούμε να καθοδηγήσουμε το μεγάλο γλωσσικό μοντέλο στο να μετατρέπει την εισαγώμενη ιατρική βιβλιογραφία στην μορφή που θέλουμε.}
+\caption{A good prompt that yields satisfactory results.}
 \label{fig:good-prompt}
 \end{figure}
 
-\subsection{Κατασκευή Συλλογιστικού Προγράμματος}
+\subsection{Construction of a Logical Program}
 
-Η βάση γνώσης αρχικά αποτελείται από ένα σύνολο συμπτωμάτων και ιατρικών ενδείξεων της μορφής: 
+The knowledge base initially consists of a set of symptoms and medical indicators in the form:
 
 \begin{align}
     symptom(s). & \; s \in \{ \text{cough, chest pain, rash}, \dots \} \\
     indicator(i). & \; i \in \{ \text{low MCV, high TIBC}, \dots \}
 \end{align}
 
-Αποτυπώνουμε έναν ασθενή ο οποίος έχει κάποιο σύμπτωμα ή βγήκε θετικός σε κάποια εξέταση ως: 
+We represent a patient who has a certain symptom or tested positive for a certain test as:
 
 \begin{equation}
     has(x). \; x \in S \cup I
 \end{equation}
 
-Οι λογικές προτάσεις με βάση τις οποίες το σύστημά μας θα βγάζει συμπεράσματα είναι της μορφής: 
+The logical propositions based on which our system will draw conclusions are in the form:
 
 \begin{align}
     diagnosis(d_1) & \longleftarrow has(x_1) \land has(x_2) \land \dots \\
@@ -445,59 +361,42 @@ diagnosis(pneumonia) :- has(symptom(cough_with_mucus)),
     diagnosis(d_2) & \longleftarrow has(x_3) \land has(x_4) \land \dots
 \end{align}
 
-Ακόμα, λαμβάνουμε υπόψιν τη συσχέτιση μεταξύ ορισμένων συμπτωμάτων.
-Παραδείγματος χάρη, σε ορισμένους ασθενείς έχει σημειωθεί σύνδεση  
-μεταξύ δερματικών ασθενειών και πονοκεφάλων\cite{migraine-hives}.
-Άλλες φορές, συμπτώματα μπορεί να οδηγήσουν στην εξέλιξη άλλων συμπτωμάτων.
-Τέτοιου είδους σχέσεις κωδικοποιούνται στη βάση γνώσης μας μέσω κανόνα της μορφής.
+We also take into account the correlation between certain symptoms. For example, there has been a noted connection between skin diseases and headaches in certain patients\cite{migraine-hives}. Sometimes, symptoms may lead to the development of other symptoms. Such relationships are encoded in our knowledge base through a rule of the form:
 
 \begin{align}
     has(symptom(S2)) \longleftarrow has(symptom(S1)) \land linked\_symptom(S1, S2).
 \end{align}
 
-Τα αντίστοιχα δεδομένα θα είναι ως εξής
+The corresponding data will be as follows:
 
 \begin{align}
     linked\_symptom(grunting, chest\_retractions).\\
     linked\_symptom(nasal\_flaring, chest\_retractions).
 \end{align}
 
-Ωστόσο, είναι αναμενόμενο πως κάποιος ασθενής δεν θα κατέχει \textit{όλα} τα καταγεγραμμένα συμπτώματα.
-Θέλουμε να δώσουμε έναν ελέγξιμο τρόπο το σύστημά μας να δίνει εναλλακτικές προβλέψεις
-στην περίπτωση όπου το ιατρικό προσωπικό δεν έχει όλες τις πληροφορίες για την κατάσταση του ασθενή.
-Έτσι, προσθέτουμε τον παρακάτω κανόνα επιλογής (choice rule), με τον οποίο προστίθεται 
-ένα σύνολο πιθανών συμπτώματων για τον ασθενή στη βάση γνώσης.
+However, it is expected that a patient will not exhibit \textit{all} recorded symptoms. We want to provide a controllable way for our system to make alternative predictions in cases where the medical staff does not have all the information about the patient's condition. Thus, we add the following choice rule, which adds a set of possible symptoms for the patient to the knowledge base.
 
 \begin{equation}
     \{ add(symptom(S)) : symptom(S) \}.
 \end{equation}
 
-Ακόμα, απαιτούμε από τον επιλυτή να βρει τουλάχιστον μία διάγνωση.
+Additionally, we require the solver to find at least one diagnosis.
 
 \begin{equation}
     \bot \longleftarrow \sim diagnosis(\_)
 \end{equation}
 
-Τέλος, ελαχιστοποιούμε τον αριθμό \say{ψεύτικων} διαγνώσεων, έτσι ώστε ο επιλυτής 
-να καταλήξει σε μία διάγνωση με όσο το δυνατόν λιγότερες υποθέσεις.
+Finally, we minimize the number of "false" diagnoses so that the solver arrives at a diagnosis with as few assumptions as possible.
 
 \begin{equation}
     \#minimize \{ 1, S : add(S) \}
 \end{equation}
 
-Με αυτό τον τρόπο, το σύστημά μας εγγυάται πως θα παράξει μία τουλάχιστον πρόβλεψη, η οποία 
-θα βασίζεται όσο το δυνατόν περισσότερο στις έγγυρες πληροφορίες που υπάρχουν για τον ασθενή.
+This way, our system guarantees that it will produce at least one prediction, which will be based as much as possible on valid information available about the patient.
 
-\subsection{Επεξηγηματικότητα Διαγνώσεων}
+\subsection{Explainability of Diagnoses}
 
-Η συμβολική τεχνητή νοημοσύνη έχει ένα μείζον πλεονέκτημα έναντι των υποσυμβολικών προσεγγίσεων λόγω της εξηγηματικότητάς της.
-Οι σχέσεις μεταξύ των γεγονότων και των συμπερασμάτων που καταλήγει ένα σύστημα, το οποίο εκτελεί ένα συμβολικό μηχανισμό είναι σαφώς καθορισμένες.
-Ωστόσο, οι επίλυτές ASP όπως το \textit{Clingo} δεν παρέχουν\footnote{Τη στιγμή της συγγραφής της εργασίας αυτής.} εύληπτα αποτυπώματα των συλλογιστικών διαδικασιών τους.
-Έχει υπάρξει έρευνα στην σύνδεση λογικών προτάσεων 
-με τις αιτιολογήσεις τους \cite{cabalar2014causal}.
-Θεωρήστε το παρακάτω λογικό πρόγραμμα, η σύνδεση των λογικών προτάσεων με τις αιτίες τους παρουσιάζονται 
-σε μορφή γράφου στο σχήμα \ref{fig:causal-g}. Αυτή είναι η δομή που μας επιτρέπει 
-να εξηγήσουμε τα συμπεράσματα ενός επιλυτή συμβολικής λογικής.
+Symbolic artificial intelligence has a major advantage over subsymbolic approaches due to its explainability. The relationships between the facts and conclusions that a system, which executes a symbolic mechanism, reaches are clearly defined. However, ASP solvers like \textit{Clingo} do not provide\footnote{At the time of writing this paper.} intuitive traces of their reasoning processes. There has been research on linking logical propositions with their justifications \cite{cabalar2014causal}. Consider the following logic program; the connection of the logical propositions with their causes is presented in the form of a graph in Figure \ref{fig:causal-g}. This structure allows us to explain the conclusions of a symbolic logic solver.
 
 \begin{equation}
 \begin{aligned}[b]
@@ -514,29 +413,21 @@ diagnosis(pneumonia) :- has(symptom(cough_with_mucus)),
 \begin{figure}
     \centering
     \includegraphics{assets/causal_g.png}
-    \caption{Αιτιολογικός γράφος λογικού ποργράμματος (εξ. \ref{eq:example-cg}).}
+    \caption{Causal graph of logic program (eq. \ref{eq:example-cg}).}
     \label{fig:causal-g}
 \end{figure}
 
+The tool \textit{xclingo}\footnote{\url{https://github.com/bramucas/xclingo2}} \cite{Cabalar_2020} allows the presentation of justifications regarding the results given by the solver \textit{Clingo}. This is achieved by adding a \src{trace} corresponding to the rules of our logic program. Providing a clear explanation of how the system reached specific conclusions can help identify potential errors in the creation of the knowledge base and provide the system user with a rationale for the final outcome. This is particularly important when the application is used in medical contexts.
 
+\section{Results}
 
-Το εργαλείο \textit{xclingo}\footnote{\url{https://github.com/bramucas/xclingo2}} \cite{Cabalar_2020} επιτρέπει την παρουσίαση αιτιολογήσεων σχετικά με τα αποτελέσματα που δίνονται από τον επιλυτή \textit{Clingo}.
-Αυτό επιτυγχάνεται προσθέτοντας ένα \src{trace} που αντιστοιχεί στους κανόνες του λογικού προγράμματός μας.
-Η παροχή μιας σαφούς εξηγήσεως για το πώς το σύστημα κατέληξε σε συγκεκριμένα συμπεράσματα, μπορεί να βοηθήσει στον εντοπισμό πιθανών σφαλμάτων κατά την δημιουργία της βάσης γνώσης και να παρέχει στον χρήστη του συστήματος μια αιτιολόγηση για το τελικό αποτέλεσμα. Αυτό είναι κάτι πολύ σημαντικό στην περίπτωση που η εφαρμογή χρησιμοποιείται σε ιατρικά πλαίσια.
-
-\section{Αποτελέσματα}
-
-Για την αξιολόγηση του συστήματός μας χρησιμοποίησαμε δημοσίως διαθέσιμα δεδομένα ασθενών\footnote{\url{https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset?select=dataset.csv}}.
-Στο σύστημά μπήκε σαν είσοδος το σύνολο των συμπτωμάτων του κάθε ασθενή.
-Σαν βάση γνώσης έχουμε τον συνδυασμό όλων των κανόνων που έχουν προκύψει από την κωδικοποίηση την ιατρικής βιβλιογραφίας.  
-Μία επιτυχημένη πρόβλεψη ορίζεται όταν η πραγματική ασθένεια του ασθενή συμπίπτει με την τελική
-πρόβλεψη του επιλυτή ASP.
+To evaluate our system, we used publicly available patient data\footnote{\url{https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset?select=dataset.csv}}. The symptoms of each patient were fed into the system as input. Our knowledge base consists of the combination of all rules derived from encoding the medical literature. A successful prediction is defined when the actual disease of the patient matches the final prediction of the ASP solver.
 
 \begin{table}[h]
     \centering
     \begin{tabular}{lcc}
     \hline
-    Ασθένεις & Μέγεθος Βάσης Γνώσης & Ακρίβεια \\
+    Diseases & Size of Knowledge Base & Accuracy \\
     \hline
     \hline
     Chicken Pox      &  66  & 95\% \\
@@ -544,21 +435,17 @@ diagnosis(pneumonia) :- has(symptom(cough_with_mucus)),
     Common Cold    &   44 & 100\% \\
     \hline
     \end{tabular}
-    \caption{Ακρίβεια της μεθόδου για μερικές ενδεικτικές ασθένειες.}
+    \caption{Accuracy of the method for some indicative diseases.}
 \end{table}
 
-Η ακρίβεια του μοντέλου μας μπορεί να φτάσει πολύ υψηλά ποσοστά ακρίβειας αλλά απαιτεί την εισαγωγή ενός μεγάλου πλήθους κανόνων στη βάση γνώσης.
-Το μέγεθος της βάσης γνώσης το ορίζουμε ως το πλήθος των λογικών όρων μέσα 
-στο ASP πρόγραμμα που αντιστοιχεί σε κάθε μία από τις ασθένειες.
+The accuracy of our model can reach very high rates but requires the input of a large number of rules into the knowledge base. We define the size of the knowledge base as the number of logical terms within the ASP program corresponding to each of the diseases.
 
-Στο πρόγραμμα που κατασκευάσαμε προσθέσαμε και τη δυνατότητα 
-επεξήγησης της διάγνωσης, κατά την οποία αξιοποιούμε 
-το εργαλείο \src{xclingo} για τη δημιουργία ενός γραφήματος
-το οποίο αποτυπώνει τους συνειρμούς που ακολούθησε το σύστημά 
-μας για τις προβλέψεις του.
+In the program we developed, we also added the capability to explain the diagnosis, where we utilize the \src{xclingo} tool to create a graph that depicts the associations followed by our system for its predictions.
 
-\begin{lstlisting}[caption={Μέρος της επεξήγησης για τη διάγνωση της ασθένειας chickenpox. Μέσα στο διάγραμμα δέντρο φαίνονται οι συσχετίσεις μεταξύ των διαφορετικών συμπτωμάτων 
-και το πώς το σύστημά μας καταλήγει στα συμπεράσματά του.}, label=lst:terms]{Name}
+\begin{lstlisting}[caption={Part of the explanation for the diagnosis of the
+disease chickenpox. The decision tree diagram shows the associations between
+different symptoms and how our system arrives at its conclusions.},
+label=lst:terms]{Name}
   *
   |__diagnosis(chickenpox)
   |  |__has(symptom(itching));has(symptom(itching))
@@ -580,27 +467,24 @@ diagnosis(pneumonia) :- has(symptom(cough_with_mucus)),
   ...
 \end{lstlisting}
 
-\section{Συμπεράσματα}
+\section{Conclusions}
 
-Στην εργασία αυτή έγινε η παρουσίαση μίας μεθοδολογίας για την αυτόματη πρόβλεψη ασθενειών 
-η οποία περιλαμβάνει την κωδικοποίηση ιατρικής βιβλιογραφίας και τη μετατροπή της σε κώδικα 
-ASP μέσω ενός μεγάλου γλωσσικού μοντέλου.
-Έγινε παρουσίαση του τρόπου λειτουργίας των μεγάλων γλωσσικών μοντέλων και του ASP, 
-ενώ έγινε συγκεκριμένη αναφορά στο ρόλο που παίζει η κάθε τεχνολογία στο τελικό σύστημα.
-Ακόμα, δείξαμε την αρχιτεκτονική μας και το πώς αυτές οι τεχνολογίες θα συνδυαστούν ενώ
-δώσαμε συγκεκριμένες υλοποιητικές λεπτομέρειες τις οποίες αναπτύξαμε τόσο
-για την δημιουργία ποιοτικών prompts για το μεγάλο γλωσσικό μοντέλο, όσο και
-στην δομή των κανόνων στην τελική ASP βάση γνώσης.
-Τελικά, εκτελέσαμε προβλέψεις πάνω σε ορισμένες ασθένειες για τις οποίες δημιουργήσαμε την
-βάση γνώσης με τη χρήση της μεθοδολογίας μας και παρουσιάσαμε τα αποτελέσματα.
-Η μέθοδός μας φαίνεται να έχει υποσχόμενα αποτελέσματα και προσφέρει αξιόπιστες προβλέψεις υψηλής ακρίβειας
-μαζί με τις επεξηγήσεις τους.
+In this paper, a methodology for the automatic prediction of diseases was
+presented, which includes the encoding of medical literature and its
+transformation into ASP code through a large language model. The operation of
+large language models and ASP was presented, with specific reference to the
+role each technology plays in the final system. We also showed our architecture
+and how these technologies will be combined, while providing specific
+implementation details that we developed for both the creation of quality
+prompts for the large language model and the structure of the rules in the
+final ASP knowledge base. Finally, we executed predictions on certain diseases
+for which we created the knowledge base using our methodology and presented the
+results. Our method appears to have promising outcomes and offers reliable
+high-accuracy predictions along with their explanations.
 
-Μελλοντική δουλειά είναι η επέκταση της μεθόδου για περισσότερες ασθένειες.
-Ταυτόχρονα θα ήταν χρήσιμη η δημιουργία μίας γραφικής διεπαφής μέσω 
-της οποίας κάποιος να μπορεί να εισάγει στοιχεία κάποιου ασθενή και να παίρνει 
-πιθανές διαγνώσεις.
-
+Future work includes extending the method to cover more diseases.
+Simultaneously, it would be useful to create a graphical interface through
+which someone could input patient data and receive possible diagnoses.
 \newpage
 \bibliographystyle{unsrt}
 \bibliography{bibliography}
