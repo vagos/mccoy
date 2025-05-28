@@ -1,7 +1,6 @@
 \documentclass[10pt,leqno]{amsart}
 \usepackage{graphicx}
 \baselineskip=16pt
-
 \usepackage{indentfirst,csquotes}
 
 \topmargin= .5cm
@@ -12,29 +11,18 @@
 \evensidemargin= .9cm
 \oddsidemargin= .9cm
 
-\usepackage{amssymb,amsthm,amsmath}
-\usepackage{xcolor,paralist,hyperref,titlesec,fancyhdr,etoolbox}
 \usepackage{datetime}
 \usepackage{wrapfig}
 \usepackage{enumerate}
-\usepackage{float}
 \usepackage{graphicx}
 \usepackage{caption}
-\usepackage[acronym]{glossaries}
-\usepackage[nottoc]{tocbibind}
 \usepackage{siunitx}
 \usepackage{subcaption}
-\usepackage{geometry}
-\usepackage{fancyhdr}
-\usepackage{cite}
-\usepackage{subfiles}
 \usepackage{amsmath}
 \usepackage{array,tabularx}
 \usepackage{chngcntr}
 \usepackage{afterpage}
 \usepackage{ulem}
-\usepackage{polyglossia}
-\usepackage{fontspec}
 \usepackage{hyperref}
 \usepackage{dirtytalk}
 \usepackage{algorithm2e}
@@ -47,13 +35,38 @@
 \usepackage{varwidth}
 \usepackage{fmtcount}
 \usepackage{tikz}
-\usepackage{tikzpeople}
 \usepackage{array}
 \usepackage[framemethod=tikz]{mdframed} % Allows defining custom boxed/framed environments
 \usepackage{cleveref}
-\usepackage{epigraph}
 \usepackage{microtype}
 \usepackage{dirtytalk}
+
+\usetikzlibrary{trees}
+\usetikzlibrary{fit}
+\usetikzlibrary{shapes}
+\usetikzlibrary{arrows.meta, positioning, shadows}
+\usetikzlibrary{chains,shapes.multipart}
+\usetikzlibrary{external}
+\usetikzlibrary{matrix}
+
+\tikzstyle{rect} = [rectangle,fill=white, text centered]
+\tikzstyle{database} = [draw, cylinder, shape border rotate = 90, aspect = 0.2]
+\tikzstyle{thick-arrow} = [->, thick]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\tikzstyle{arrow-small} = [->,>=stealth]
+\tikzstyle{simple-rect} = [rectangle, text centered, draw = black, inner sep=4mm]
+
+\tikzset{
+    doc/.style={draw, minimum height=4em, minimum width=3em, 
+                fill=white, 
+                double copy shadow={shadow xshift=4pt, 
+                             shadow yshift=4pt, fill=white, draw}}
+}
+
+\tikzset{
+    dcs/.style = {double copy shadow},
+}
+
 
 \newtheorem{theorem}{Theorem}[]
 \newtheorem{definition}[theorem]{Definition}
@@ -63,12 +76,18 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{conjecture}[theorem]{Conjecture}
 
-\titleformat{\section}[display]{\normalfont\huge\bfseries\centering}{\centering\chaptertitlename\thechapter}{10pt}{\Large}
-\titlespacing*{\section}{0pt}{0ex}{0ex}
+\hypersetup{
+    colorlinks=true,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
 
-\hypersetup{ colorlinks=true, linkcolor=black, filecolor=black, urlcolor=black }
-\def\proof{\noindent {\it Proof. $\, $}}
-\def\endproof{\hfill $\Box$ \vskip 5 pt }
+\hypersetup{linkcolor=black}
+
+\newcommand{\src}[1]{\texttt{#1}}
+
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true, captionpos=b}
+
 
 \mdfdefinestyle{commandline}{
 	leftmargin=10pt,
@@ -117,24 +136,26 @@
 	\end{mdframed}
 }
 
-\renewcommand{\lstlistingname}{Καταχώριση}
+
 
 \title{Automatic Disease Diagnosis Using Large Language Models and Answer Set Programming}
-\author{Ioanna Gemou\thanks{Department of Electrical and Computer Engineering, University of Patras} \\ \src{ioannagemou@upnet.gr} \and Evangelos Lamprou\footnotemark[1] \\ \src{e.lamprou@upnet.gr}}
+\author{
+	Ioanna Gemou
+	\and
+	Evangelos Lamprou
+}
 
 \begin{document}
 
 \maketitle
-\section{Abstract}
+\begin{abstract}
 The development of automatic disease prediction systems is critically important for improving human health and supporting physicians in accurate diagnosis and treatment. Accurate diagnosis is essential for timely intervention and effective therapy, and it can also help prevent further complications and burdensome medical procedures.
-
 Symbolic artificial intelligence has previously been applied in the medical domain \cite{Alviano_2020}. However, its adoption has been limited due to the complex knowledge bases required for such systems to operate.
 
 The proposed method, which combines Large Language Models (LLMs) with Answer Set Programming (ASP), offers a powerful approach by providing a reliable and efficient means of generating a knowledge base that can then be used for disease prediction.
-
 The novelty of our method lies in the combination of these two paradigms. LLMs are capable of encoding medical literature into ASP code with remarkable accuracy and deep comprehension, while ASP contributes structured reasoning and explainability. This combination enables the development of a robust disease prediction system that integrates the \textbf{accuracy and intelligence of language models} with the \textbf{explainability and efficiency of Answer Set Programming}.
-
 Our method demonstrates promising results on the patient dataset to which it was applied.
+\end{abstract}
 
 \section{Literature Review}
 
@@ -487,6 +508,6 @@ Simultaneously, it would be useful to create a graphical interface through
 which someone could input patient data and receive possible diagnoses.
 \newpage
 \bibliographystyle{unsrt}
-\bibliography{bibliography}
+\bibliography{bib}
 
 \end{document}
