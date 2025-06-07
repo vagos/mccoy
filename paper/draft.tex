@@ -158,7 +158,7 @@ This work introduces \sys, a framework that combines Large Language Models (LLMs
 with Answer Set Programming (ASP) to overcome this barrier. 
 LLMs extract medical knowledge from text and translate it into ASP code, 
 while ASP enables structured, explainable reasoning. 
-This integration yields a robust, interpretable prediction system 
+This integration yields a robust, interpretable prediction framework 
 that leverages the strengths of both paradigms. 
 This approach shows strong performance on real patient data.
 % \sys accurately predicts diseases based on symptoms derived from medical literature.
@@ -497,7 +497,7 @@ Example entries for such relationships include:
 \end{align}
 
 Since patients may not exhibit \textit{all} known symptoms, 
-the system must support reasoning under partial information. 
+\sys must support reasoning under partial information. 
 To allow flexible reasoning, a choice rule introduces possible symptoms 
 into the knowledge base when patient data is incomplete:
 \begin{equation}
@@ -544,27 +544,30 @@ This structure supports the interpretability of conclusions derived by a symboli
 \end{aligned}
 \label{eq:example-cg}
 \end{equation}
-
+% https://docs.google.com/drawings/d/1Ing4GFH2kbniiHI5rbXzw-xcAUQAxWAJpgmg4tz1fzc/edit?usp=sharing
 \begin{figure}
     \centering
-    \includegraphics{assets/causal_g.png}
+    \includegraphics{assets/causal_g.pdf}
     \caption{Causal graph of logic program (\cref{eq:example-cg}).}
     \label{fig:causal-g}
 \end{figure}
 
-The tool \textit{xclingo}\footnote{\url{https://github.com/bramucas/xclingo2}} \cite{Cabalar_2020} 
-allows the presentation of justifications regarding the results given by the solver \textit{Clingo}. 
-This is achieved by adding a \src{trace} corresponding to the logic program's rules. 
-roviding a clear explanation of how the system reached specific conclusions can help identify potential 
-errors in the creation of the knowledge base and provide the system user with a rationale for the final outcome. 
-This is particularly important when the application is used in medical contexts.
+The tool \textit{xclingo}\footnote{\url{https://github.com/bramucas/xclingo2}}~\cite{Cabalar_2020} 
+enables the visualization of justifications for results produced by the \textit{Clingo} solver. 
+It does so by incorporating a \src{trace} that corresponds to the rules of the logic program. 
+Providing clear explanations of how the framework reaches specific conclusions helps users identify 
+potential errors in the construction of the knowledge base and offers transparency for the final outcome. 
+This is especially important in medical contexts, where interpretability and trust are critical.
 
 \section{Results}
 
-Evaluation was conducted using publicly available patient data.\footnote{\url{https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset?select=dataset.csv}} 
-Each patient's symptoms were provided as input to the system. 
-The knowledge base combines all rules derived from the encoded medical literature. 
-A prediction is considered successful when the disease identified by the ASP solver matches the patient’s actual diagnosis.
+Evaluation was conducted using publicly available patient data.\footnote{\url{https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset?select=dataset.csv}}
+Each patient's list of symptoms serves as input.  
+The knowledge base—comprising ASP rules automatically derived  
+from medical literature—infers potential diagnoses.  
+A prediction is considered correct when the disease inferred  
+by the ASP solver matches the actual diagnosis listed in the dataset.
+
 \begin{table}[h]
     \centering
     \begin{tabular}{lcc}
@@ -572,53 +575,66 @@ A prediction is considered successful when the disease identified by the ASP sol
     Diseases & Size of Knowledge Base & Accuracy \\
     \hline
     \hline
-    Chicken Pox      &  66  & 95\% \\
-    Pneumonia        &  75  & 100\% \\
-    Common Cold    &   44 & 100\% \\
+    Chicken Pox    &  66  & 95\% \\
+    Pneumonia      &  75  & 100\% \\
+    Common Cold    &  44  & 100\% \\
     \hline
     \end{tabular}
-    \caption{Accuracy of the method on selected diseases.}
+    \caption{Accuracy of the framework on selected diseases. 
+    The size column indicates the number of logical terms in the disease-specific ASP program.}
 \end{table}
 
-The model achieves high accuracy when a sufficiently 
-large set of rulesis included in the knowledge base. 
-The size of the knowledge base is defined as the number 
-of logical terms in the ASP program associated with each disease.
+High accuracy is achieved when the knowledge base includes a sufficiently 
+rich set of logical rules. The size of this base, measured as the number 
+of ASP terms associated with a disease, correlates with prediction performance.
 
-The system also incorporates an explanation mechanism using the \src{xclingo} tool,
-which generates a graph visualizing the logical associations used to derive the diagnosis.
+In addition to accurate predictions, \sys offers explainability 
+through integration with \src{xclingo}. 
+This tool visualizes the reasoning process behind each diagnosis, 
+revealing the logical path from symptoms to conclusion.
 
-\begin{lstlisting}[caption={A part of the explanation for the chickenpox diagnosis. 
-    The decision tree illustrates the symptom associations and outlines 
-    the reasoning process used by the system to reach its conclusion.},
-label=lst:terms]{Name}
-  *
-  |__diagnosis(chickenpox)
-  |  |__has(symptom(itching));has(symptom(itching))
-  |  |__has(symptom(fatigue));has(symptom(fatigue));has(symptom(fatigue));has(symptom(fatigue));has(symptom(fatigue))
-  |  |__has(symptom(lethargy))
-  |  |  |__has(symptom(fatigue));has(symptom(fatigue));has(symptom(fatigue));has(symptom(fatigue));has(symptom(fatigue))
-  |  |  |__linked_symptom(fatigue,lethargy)
-  |  |__has(symptom(high_fever))
-  |  |  |__has(symptom(mild_fever));has(symptom(mild_fever))
-  |  |  |  |__has(symptom(loss_of_appetite));has(symptom(loss_of_appetite))
-  |  |  |  |__linked_symptom(loss_of_appetite,mild_fever)
-  |  |  |__linked_symptom(mild_fever,high_fever)
-  |  |__has(symptom(loss_of_appetite));has(symptom(loss_of_appetite))
-  |  |__has(symptom(mild_fever));has(symptom(mild_fever))
-  |  |  |__has(symptom(loss_of_appetite));has(symptom(loss_of_appetite))
-  |  |  |__linked_symptom(loss_of_appetite,mild_fever)
-  |  |__has(symptom(swelled_lymph_nodes))
-  |  |  
-  ...
+\begin{lstlisting}[caption={Excerpt from the explanation tree for the chickenpox diagnosis. The structure illustrates the reasoning path based on symptom associations.},
+    label=lst:chickenpox_explanation]{Name}
+    *
+    |__ diagnosis(chickenpox)
+        |__ has(symptom(itching))
+        |__ has(symptom(fatigue))
+        |__ has(symptom(lethargy))
+            |__ has(symptom(fatigue))
+            |__ linked_symptom(fatigue, lethargy)
+        |__ has(symptom(high_fever))
+            |__ has(symptom(mild_fever))
+                |__ has(symptom(loss_of_appetite))
+                |__ linked_symptom(loss_of_appetite, mild_fever)
+            |__ linked_symptom(mild_fever, high_fever)
+        |__ has(symptom(loss_of_appetite))
+        |__ has(symptom(mild_fever))
+            |__ has(symptom(loss_of_appetite))
+            |__ linked_symptom(loss_of_appetite, mild_fever)
+        |__ has(symptom(swelled_lymph_nodes))
 \end{lstlisting}
+    
+\Cref{lst:chickenpox_explanation} shows an excerpt from the explanation 
+tree generated for a patient diagnosed with \textit{chickenpox}. 
+The tree visualizes the reasoning steps performed by the ASP solver to reach this conclusion. 
+At the root, \sys infers \texttt{diagnosis(chickenpox)} 
+based on the presence of multiple symptoms such as \texttt{itching}, \texttt{fatigue}, \texttt{lethargy}, 
+and \texttt{high\_fever}. 
+Each symptom is further justified through observed inputs or inferred relationships. 
+For example, \texttt{lethargy} is supported by repeated instances of \texttt{fatigue} 
+and the known association \texttt{linked\_symptom(fatigue, lethargy)}. 
+Similarly, \texttt{high\_fever} is explained via the intermediate symptom \texttt{mild\_fever}, 
+which itself is supported by \texttt{loss\_of\_appetite}. 
+These explanations demonstrate how \sys combines direct observations 
+and transitive symptom relationships encoded in the knowledge base to 
+construct a transparent and interpretable diagnostic path.
 
-\section{Conclusions}
+\section{Conclusion}
 
 This work presents a method for automatic disease prediction 
 that encodes medical literature and transforms it into ASP code using an LLM. 
-It describes the roles of both LLMs and ASP, emphasizing how each contributes to the overall system. 
-The system architecture is outlined, along with implementation details for constructing effective prompts 
+It describes the roles of both LLMs and ASP, emphasizing how each contributes to the overall framework. 
+The \sys architecture is outlined, along with implementation details for constructing effective prompts 
 and structuring rules within the ASP knowledge base.
 The method includes predictions for a set of diseases based on the constructed knowledge bases. 
 Results show that this approach achieves high-accuracy predictions and provides interpretable explanations.
