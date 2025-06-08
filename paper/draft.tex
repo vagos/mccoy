@@ -411,7 +411,7 @@ diagnosis(pneumonia) :- symptom(cough),
 \end{verbatim}
 \end{commandline}
 
-\caption{A simple prompt that does not yield satisfactory results.}
+\caption{A prompt that does not yield satisfactory results. The LLM output does not decompose the disease diagnosis into discrete rules.}
 \label{fig:bad-prompt}
 \end{figure}
 
@@ -458,7 +458,8 @@ diagnosis(pneumonia) :- has(symptom(cough_with_mucus)),
 ...
 \end{verbatim}
 \end{commandline}
-\caption{An effective prompt that produces accurate and well-structured output.}
+\caption{An effective prompt that produces accurate and well-structured output.
+	The LLM output is structured into multiple rules that aid explainability and can result in partial diagnoses.}
 \label{fig:good-prompt}
 \end{figure}
 
