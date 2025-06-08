@@ -336,18 +336,18 @@ for disease diagnosis by combining language understanding with rule-based valida
 
 \begin{figure}[!h]
 \begin{center}
-\begin{tikzpicture}[node distance = 5cm, minimum width=2cm, minimum height=1cm]
+\begin{tikzpicture}[node distance = 3cm, minimum width=2cm, minimum height=1cm]
     \node [doc, label=above:{}] (med-bib) {Medical Bibliography};
-    \node [rect, draw, right=3cm of med-bib, fill=blue!50] (llm) {Large Language Model};
+    \node [rect, draw, rounded corners=2pt, right=2cm of med-bib, fill=blue!30] (llm) {Large Language Model};
     \node [rect, draw, above= 1cm of med-bib, fill=orange!50] (prompt) {Prompt};
-    \node [database, below left= 3cm of med-bib, fill=green!30] (knowledge-base) {Knowledge Base};
+    \node [database, below left= 2.5cm of med-bib, fill=green!30] (knowledge-base) {Knowledge Base};
     \node [rect, draw, right of=knowledge-base] (solver) {ASP Solver};
-    \node [rect, draw, below=1cm of solver] (patient) {\textit{Patient Data}};
+    \node [rect, draw, below=.5cm of solver] (patient) {\textit{Patient Data}};
     \node [rect, right of=solver] (diagnosis) {\textbf{Diagnosis}};
 
     \draw[thick-arrow] (med-bib) edge [] node [above] {} (llm);
     \draw[thick-arrow] (prompt) edge [in=90, out=0, looseness=1] node [above, sloped] {\textit{\say{please convert the following into ASP code...}}} (llm);
-    \draw[thick-arrow] (llm) edge [in=90, out=270, looseness=1] node [below] {ASP Program} (knowledge-base);
+    \draw[thick-arrow] (llm) edge [in=90, out=270, looseness=1] node [rect, draw] {ASP Program} (knowledge-base);
     \draw[thick-arrow] (knowledge-base) edge [] node [above] {} (solver);
     \draw[thick-arrow] (solver) edge [] node [above] {} (diagnosis);
     \draw[thick-arrow] (patient) edge [in=270, out=180, looseness=1] node [above] {} (knowledge-base);
