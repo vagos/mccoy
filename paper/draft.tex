@@ -160,7 +160,7 @@ LLMs extract medical knowledge from text and translate it into ASP code,
 while ASP enables structured, explainable reasoning. 
 This integration yields a robust, interpretable prediction framework 
 that leverages the strengths of both paradigms. 
-This approach shows strong performance on real patient data.
+\sys shows strong performance on real patient data.
 % \sys accurately predicts diseases based on symptoms derived from medical literature.
 \end{abstract}
 
@@ -170,7 +170,7 @@ This approach shows strong performance on real patient data.
 The development of automatic disease prediction systems 
 is crucial for enhancing healthcare and supporting medical 
 professionals in timely and accurate diagnosis. 
-Symbolic artificial intelligence (AI), particularly Answer Set Programming (ASP), 
+Symbolic artificial intelligence (AI), particularly ASP, 
 has been explored in this context due to its ability 
 to support structured and explainable reasoning. 
 However, the construction of expressive knowledge bases 
@@ -236,7 +236,7 @@ were first introduced by Gelfond and Lifschitz \cite{Gelfond2000, gel88}.
 Programming with this approach is done in a family of languages 
 sometimes referred to as \textit{AnsProlog} \cite{Gelfond2002}.
 
-The central idea of Answer Set Programming is to represent a problem 
+The central idea of ASP is to represent a problem 
 declaratively using logical rules, facts, and constraints. 
 These elements collectively form a program that describes the conditions any solution must satisfy. 
 Instead of writing an algorithm to solve the problem, 
@@ -248,7 +248,7 @@ In traditional programming, transitioning from a problem to a solution
 requires the programmer's thorough understanding of the given problem, 
 followed by the creation of a program that will produce the correct output 
 when provided with an instance of the problem, which will then be interpreted as the solution. 
-In Answer Set Programming, the process of deriving solutions from a problem specification 
+In ASP, the process of deriving solutions from a problem specification 
 typically follows a sequence of well-defined steps \cite{Gebser2013}, 
 as illustrated in \cref{fig:asp-solving}.
 
@@ -280,7 +280,7 @@ as illustrated in \cref{fig:asp-solving}.
 \end{figure}
 
 \begin{itemize}
-    \item \textbf{Modeling}: The problem is modeled using ASP (Answer Set Programming) language.
+    \item \textbf{Modeling}: The problem is modeled using ASP language.
     \item \textbf{Grounding}: A grounder (e.g., gringo) converts the program into a set of basic rules and facts.
     \item \textbf{Solving}: A solver (e.g., clasp) finds a solution to the problem by computing the set of stable models (answer sets).
 \end{itemize}
@@ -293,7 +293,7 @@ into a single application, also providing a powerful Python API for integrating 
 \section{Related work}
 % we need to add something about LLM + ASP in disease diagnosis
 \paragraph{\textbf{ASP for disease diagnosis}}
-Answer Set Programming (ASP) has been used to represent 
+ASP has been used to represent 
 and reason over medical knowledge in a declarative, logic-based manner. 
 Early work applied ASP to biomedical ontologies and structured databases 
 to answer complex diagnostic and pharmacological queries with interpretable 
