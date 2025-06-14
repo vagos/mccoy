@@ -40,6 +40,7 @@
 \usepackage{cleveref}
 \usepackage{microtype}
 \usepackage{dirtytalk}
+\usepackage{booktabs}
 
 \usetikzlibrary{trees}
 \usetikzlibrary{fit}
@@ -79,6 +80,7 @@
 \hypersetup{
     colorlinks=true,
     filecolor=magenta,      
+		citecolor=black,
     urlcolor=blue,
 }
 
@@ -138,16 +140,28 @@
 
 \newcommand{\sys}{\textsc{McCoy}\xspace}
 
-\title{Automatic Disease Diagnosis Using Large Language Models and Answer Set Programming}
-\author{
-	Ioanna Gemou
-	\and
-	Evangelos Lamprou
+\makeatletter
+\def\@settitle{%
+  \begin{center}%
+    \normalfont\LARGE\bfseries
+    \@title\par
+  \end{center}%
 }
+\makeatother
+
+\title[\sys: Automatic Disease Diagnosis Using LLMs \& ASP]{\sys: Automatic Disease Diagnosis Using Large Language Models and Answer Set Programming}
+
+\author[Ioanna Gemou]{Ioanna Gemou}
+\author[Evangelos Lamprou]{Evangelos Lamprou}
+\thanks{Originally submitted as part of a research competition on 1st June 2023.}
 
 \begin{document}
 
 \maketitle
+\vspace{-1.5em} % adjust as needed
+{\small\itshape \centering Originally submitted as part of a university research competition on 1st June 2023.\par}
+\vspace{0.5em} % optional: add space before body
+
 \begin{abstract}
 Accurate disease prediction is vital for timely intervention, 
 effective treatment, and reducing medical complications. 
@@ -164,7 +178,6 @@ that leverages the strengths of both paradigms.
 % \sys accurately predicts diseases based on symptoms derived from medical literature.
 \end{abstract}
 
-% TODO: Add text between sections and paragraphs
 \section{Introduction}
 
 The development of automatic disease prediction systems 
@@ -177,7 +190,7 @@ However, the construction of expressive knowledge bases
 remains a significant barrier to practical adoption.
 
 This paper introduces \sys, a framework 
-that combines Large Language Models (LLMs) with the 
+that combines LLMs with the 
 formal reasoning capabilities of ASP.
 \sys extracts and encodes medical knowledge from text into ASP code,
 enabling interpretable and accurate diagnosis 
@@ -186,7 +199,7 @@ of diseases based on patient symptoms.
 \section{Background}
 
 \paragraph{\textbf{Large Language Models}}
-Large language models (LLMs) \cite{zhao2023survey} are advanced computational systems 
+LLMs \cite{zhao2023survey} are advanced computational systems 
 designed to understand and generate human language. 
 Developed using cutting-edge machine learning techniques, 
 these models can produce text that closely mirrors human linguistic patterns.
@@ -254,12 +267,12 @@ as illustrated in \cref{fig:asp-solving}.
 
 \begin{figure}[htb]
     \begin{center}
-\begin{tikzpicture}[node distance=4cm]
+\begin{tikzpicture}[node distance=2.9cm]
         \node [simple-rect] (problem)  at (0,0) {Problem};
         \node [simple-rect, below of=problem] (program) {Program};
         
         \node [simple-rect, right of=program] (grounder) {Grounder};
-        \node [simple-rect, right of=grounder] (solver) {Solver};
+        \node [simple-rect, right=2cm of grounder] (solver) {Solver};
         
         \node [simple-rect, right of=solver] (stable-models) {Stable Models};
         
@@ -272,7 +285,7 @@ as illustrated in \cref{fig:asp-solving}.
         \draw [arrow-small] (grounder) -- node[above] {\footnotesize Grounding} (solver);
         \draw [arrow-small] (solver) -- node[above] {} (stable-models);
 
-        \node[draw, dotted, fit=(grounder) (solver), inner sep=4mm, label=above:{Solving}] {};
+        \node[draw, dotted, fit=(grounder) (solver), inner sep=2mm, label=above:{Solving}] {};
 \end{tikzpicture}
     \end{center}
 		\caption{Solving a problem using ASP.}
@@ -297,7 +310,8 @@ ASP has been used to represent
 and reason over medical knowledge in a declarative, logic-based manner. 
 Early work applied ASP to biomedical ontologies and structured databases 
 to answer complex diagnostic and pharmacological queries with interpretable 
-logical justifications \cite{Erdem2011}. In the clinical domain, 
+logical justifications \cite{Erdem2011}. 
+In the clinical domain, 
 ASP is especially effective for encoding medical rules and patient-specific data, 
 enabling precise and explainable decision-making.
 Common strategies in ASP-based medical reasoning include:
@@ -309,15 +323,18 @@ Common strategies in ASP-based medical reasoning include:
     diseases, treatments, and patient data. For example, a rule could state that 
     if a patient exhibits specific symptoms, it indicates the presence or absence 
     of certain diseases.
+		There have been multiple instances of rule-based medical reasoning systems~\cite{CHEN_2016,marple2017s}
     \item \textbf{Knowledge Base Construction}: ASP facilitates the construction of 
     structured knowledge bases composed of facts, rules, and constraints. These can 
     model diagnostic criteria, symptom-disease associations, and therapeutic protocols 
-    in a consistent and extensible manner.
+		in a consistent and extensible manner~\cite{chen2018automating,CHEN_2016}.
 \end{itemize}
+\sys builds upon these works and identifies a key bottleneck, which is the construction of a
+knowledge base that can cover a wide range of diseases and conditions.
 
 \paragraph{\textbf{Integrating LLMs with ASP}}
 
-Recent work explores the synergy between LLMs and ASP 
+More recent work explores the synergy between LLMs and ASP 
 for enhanced diagnostic reasoning. 
 These hybrid approaches aim to combine the language understanding of LLMs 
 with the precision and explainability of symbolic reasoning. 
@@ -330,6 +347,8 @@ A specialized lightweight LLM has also been trained to generate valid ASP code,
 improving the automation of rule-based medical reasoning \cite{coppolillo2024llasp}.
 These systems assist in building reliable and clear reasoning pipelines 
 for disease diagnosis by combining language understanding with rule-based validation.
+These systems were developed after \sys and illustrate the convergent development of similar approaches, highlighting the intuitive appeal and practical value of the underlying techniques.
+
 \section{Methodology}
 
 \paragraph{\textbf{Architecture}}
@@ -553,7 +572,7 @@ This structure supports the interpretability of conclusions derived by a symboli
     \label{fig:causal-g}
 \end{figure}
 
-The tool \textit{xclingo}\footnote{\url{https://github.com/bramucas/xclingo2}}~\cite{Cabalar_2020} 
+The tool \textit{xclingo}~\cite{Cabalar_2020} 
 enables the visualization of justifications for results produced by the \textit{Clingo} solver. 
 It does so by incorporating a \src{trace} that corresponds to the rules of the logic program. 
 Providing clear explanations of how the framework reaches specific conclusions helps users identify 
@@ -571,18 +590,17 @@ by the ASP solver matches the actual diagnosis listed in the dataset.
 
 \begin{table}[h]
     \centering
+    \caption{Accuracy of the framework on selected diseases. 
+    The size column indicates the number of logical terms in the disease-specific ASP program.}
     \begin{tabular}{lcc}
-    \hline
-    Diseases & Size of Knowledge Base & Accuracy \\
-    \hline
-    \hline
+    \toprule
+    Diseases & Size & Accuracy \\
+    \midrule
     Chicken Pox    &  66  & 95\% \\
     Pneumonia      &  75  & 100\% \\
     Common Cold    &  44  & 100\% \\
-    \hline
+    \bottomrule
     \end{tabular}
-    \caption{Accuracy of the framework on selected diseases. 
-    The size column indicates the number of logical terms in the disease-specific ASP program.}
 \end{table}
 
 High accuracy is achieved when the knowledge base includes a sufficiently 
@@ -595,7 +613,7 @@ This tool visualizes the reasoning process behind each diagnosis,
 revealing the logical path from symptoms to conclusion.
 
 \begin{lstlisting}[caption={Excerpt from the explanation tree for the chickenpox diagnosis. The structure illustrates the reasoning path based on symptom associations (slightly modified for clarity).},
-    label=lst:chickenpox_explanation]{Name}
+    label=lst:chickenpox-explanation]{Name}
     *
     |__ diagnosis(chickenpox)
         |__ has(symptom(itching))
@@ -615,7 +633,7 @@ revealing the logical path from symptoms to conclusion.
         |__ has(symptom(swelled_lymph_nodes))
 \end{lstlisting}
     
-\Cref{lst:chickenpox_explanation} shows an excerpt from the explanation 
+\Cref{lst:chickenpox-explanation} shows an excerpt from the explanation 
 tree generated for a patient diagnosed with \textit{chickenpox}. 
 The tree visualizes the reasoning steps performed by the ASP solver to reach this conclusion. 
 At the root, \sys infers \texttt{diagnosis(chickenpox)} 
