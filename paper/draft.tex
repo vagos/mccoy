@@ -203,7 +203,7 @@ LLMs \cite{zhao2023survey} are advanced computational systems
 designed to understand and generate human language. 
 Developed using cutting-edge machine learning techniques, 
 these models can produce text that closely mirrors human linguistic patterns.
-Modern architectures such as \textit{GPT-4} \cite{openai2023gpt4}, 
+Modern architectures such as \textit{GPT-5} \cite{openai2023gpt4, gpt5}, 
 are trained on massive corpora spanning diverse domains, 
 enabling them to acquire broad, cross-disciplinary knowledge. 
 LLMs use deep learning algorithms \cite{Sarker2021} 
@@ -213,7 +213,7 @@ By capturing patterns and structures in the training data,
 they can generate coherent and relevant responses based on given prompts.
 The term “large” refers to the billions of parameters 
 that allow these models to generate context-aware responses. 
-The basic premise of a language model is its ability to predict 
+The basic premise of an LLM is its ability to predict 
 the next word (referred to as a token) based on the text it has observed so far, 
 according to the context.
 
@@ -228,7 +228,7 @@ biomedical knowledge retrieval \cite{Luo2022}.
 Among their capabilities, LLMs excel at transforming text from one representation to another, 
 making them powerful tools for a wide range of natural language processing tasks. 
 This characteristic is particurarly relevant to the present work, 
-which focuses on the effective encoding of medical literature. 
+which focuses on the effective encoding of medical literature. \\
 
 \paragraph{\textbf{Challenges in applying LLMs}}
 
@@ -238,7 +238,7 @@ that reflect the biases inherent in the training data.
 There have been efforts to mitigate these issues 
 through data preprocessing techniques and fine-tuning \cite{Dodge2021}.
 Ongoing research seeks to improve the factual accuracy, safety, and interpretability 
-of these models, enabling their deployment in high-stakes environments \cite{Ganguli2022}.
+of these models, enabling their deployment in high-stakes environments \cite{Ganguli2022}. \\
 
 \paragraph{\textbf{Answer Set Programming}}
 
@@ -263,7 +263,11 @@ followed by the creation of a program that will produce the correct output
 when provided with an instance of the problem, which will then be interpreted as the solution. 
 In ASP, the process of deriving solutions from a problem specification 
 typically follows a sequence of well-defined steps \cite{Gebser2013}, 
-as illustrated in \cref{fig:asp-solving}.
+as illustrated in \cref{fig:asp-solving}. 
+First, the problem is modeled using the ASP language. 
+Next, a grounder (e.g., gringo \cite{Gebser2014}) transforms the program into a set of basic rules and facts. 
+Finally, a solver (e.g., clasp \cite{Holldobler2014}) computes the stable models (answer sets), 
+which correspond to the solutions of the original problem.
 
 \begin{figure}[htb]
     \begin{center}
@@ -292,45 +296,30 @@ as illustrated in \cref{fig:asp-solving}.
     \label{fig:asp-solving}
 \end{figure}
 
-\begin{itemize}
-    \item \textbf{Modeling}: The problem is modeled using ASP language.
-    \item \textbf{Grounding}: A grounder (e.g., gringo) converts the program into a set of basic rules and facts.
-    \item \textbf{Solving}: A solver (e.g., clasp) finds a solution to the problem by computing the set of stable models (answer sets).
-\end{itemize}
-
 Several solvers for ASP have been developed, such as DLV \cite{Xia2020}. 
-This work uses the ASP system clingo \cite{Gebser2014}, 
-which combines the grounder gringo with the clasp solver \cite{Holldobler2014} 
-into a single application, also providing a powerful Python API for integrating the solver into other applications.
+This work uses the ASP system clingo, 
+which integrates the gringo grounder \cite{Gebser2014} with the clasp solver \cite{Holldobler2014} into a single system. 
+Clingo also offers a powerful Python API, enabling the solver's integration into other applications.
 
 \section{Related work}
-% we need to add something about LLM + ASP in disease diagnosis
 \paragraph{\textbf{ASP for disease diagnosis}}
-ASP has been used to represent 
-and reason over medical knowledge in a declarative, logic-based manner. 
-Early work applied ASP to biomedical ontologies and structured databases 
-to answer complex diagnostic and pharmacological queries with interpretable 
-logical justifications \cite{Erdem2011}. 
-In the clinical domain, 
-ASP is especially effective for encoding medical rules and patient-specific data, 
+ASP has been used to represent and reason over medical knowledge in a declarative, logic-based manner. 
+Early work applied ASP to biomedical ontologies and structured databases to answer complex diagnostic 
+and pharmacological queries with interpretable logical justifications \cite{Erdem2011}. 
+In the clinical domain, ASP is especially effective for encoding medical rules and patient-specific data, 
 enabling precise and explainable decision-making.
-Common strategies in ASP-based medical reasoning include:
 
-\begin{itemize}
-    \item \textbf{Rule-Based Representation}: ASP allows for the representation of medical 
-    knowledge as rules in the form of logical statements. 
-    These rules define relationships between medical entities such as symptoms, 
-    diseases, treatments, and patient data. For example, a rule could state that 
-    if a patient exhibits specific symptoms, it indicates the presence or absence 
-    of certain diseases.
-		There have been multiple instances of rule-based medical reasoning systems~\cite{CHEN_2016,marple2017s}
-    \item \textbf{Knowledge Base Construction}: ASP facilitates the construction of 
-    structured knowledge bases composed of facts, rules, and constraints. These can 
-    model diagnostic criteria, symptom-disease associations, and therapeutic protocols 
-		in a consistent and extensible manner~\cite{chen2018automating,CHEN_2016}.
-\end{itemize}
-\sys builds upon these works and identifies a key bottleneck, which is the construction of a
-knowledge base that can cover a wide range of diseases and conditions.
+Two common strategies illustrate the role of ASP in medical reasoning. 
+The first is \textit{rule-based representation}, where medical knowledge is expressed as logical statements 
+that capture relationships among symptoms, diseases, treatments, and patient data. 
+For instance, a rule might specify that if a patient exhibits certain symptoms, 
+this supports or excludes the presence of particular diseases. 
+The second is \textit{knowledge base construction}, where facts, rules, and constraints 
+are combined into structured repositories that consistently model diagnostic criteria, 
+symptom–disease associations, and therapeutic protocols in an extensible way. 
+Together, these approaches demonstrate how ASP provides a flexible yet rigorous framework 
+for supporting medical diagnosis, offering not only accurate predictions 
+but also transparent reasoning paths that can be trusted in high-stakes settings.\\
 
 \paragraph{\textbf{Integrating LLMs with ASP}}
 
@@ -345,65 +334,41 @@ Other work uses ASP to validate and trace misleading or inconsistent outputs
 from LLMs in medical contexts \cite{Nguyen2025}. 
 A specialized lightweight LLM has also been trained to generate valid ASP code, 
 improving the automation of rule-based medical reasoning \cite{coppolillo2024llasp}.
-These systems assist in building reliable and clear reasoning pipelines 
+Collectively, these systems assist in building reliable and clear reasoning pipelines 
 for disease diagnosis by combining language understanding with rule-based validation.
-These systems were developed after \sys and illustrate the convergent development of similar approaches, highlighting the intuitive appeal and practical value of the underlying techniques.
-
 \section{Methodology}
 
 \paragraph{\textbf{Architecture}}
 
+\Cref{fig:architecture} illustrates the \sys architecture, 
+which transforms unstructured medical text into a structured knowledge base \cite{ré2014feature}. 
+The process begins with the collection of medical literature relevant to the diseases or conditions of interest. 
+A carefully designed prompt is then used to guide an LLM in translating this literature into ASP code, 
+which is incorporated into a growing knowledge base. 
+This knowledge base is further enriched with patient-specific information such as symptoms and examination results. 
+An ASP solver subsequently reasons over the combined knowledge base and produces a diagnosis
+--or a set of candidate diagnoses--in the form of answer sets.
+
 \begin{figure}[!h]
-\begin{center}
-\begin{tikzpicture}[node distance = 3cm, minimum width=2cm, minimum height=1cm]
-    \node [doc, label=above:{}] (med-bib) {Medical Bibliography};
-    \node [rect, draw, rounded corners=2pt, right=2cm of med-bib, fill=blue!30] (llm) {Large Language Model};
-    \node [rect, draw, above= 1cm of med-bib, fill=orange!50] (prompt) {Prompt};
-    \node [database, below left= 2.5cm of med-bib, fill=green!30] (knowledge-base) {Knowledge Base};
-    \node [rect, draw, right of=knowledge-base] (solver) {ASP Solver};
-    \node [rect, draw, below=.5cm of solver] (patient) {\textit{Patient Data}};
-    \node [rect, right of=solver] (diagnosis) {\textbf{Diagnosis}};
-
-    \draw[thick-arrow] (med-bib) edge [] node [above] {} (llm);
-    \draw[thick-arrow] (prompt) edge [in=90, out=0, looseness=1] node [above, sloped] {\textit{\say{please convert the following into ASP code...}}} (llm);
-    \draw[thick-arrow] (llm) edge [in=90, out=270, looseness=1] node [rect, draw] {ASP Program} (knowledge-base);
-    \draw[thick-arrow] (knowledge-base) edge [] node [above] {} (solver);
-    \draw[thick-arrow] (solver) edge [] node [above] {} (diagnosis);
-    \draw[thick-arrow] (patient) edge [in=270, out=180, looseness=1] node [above] {} (knowledge-base);
-
-\end{tikzpicture}
-\end{center}
-	\caption{\textbf{\sys overview.} The diagnostic process begins by transforming medical literature 
+    % https://docs.google.com/drawings/d/1cr2lTIjSUxfQH54CZui8vGqLS2keOfW41i4g4uGfwhw/edit?usp=sharing
+    \includegraphics[width=\textwidth]{assets/mccoy.pdf}
+    \caption{\textbf{\sys overview.} The diagnostic process begins by transforming medical literature 
     into an ASP program using a LLM. 
     An ASP solver then executes the program and produces a final diagnosis 
     based on each patient’s data.}
     \label{fig:architecture}
 \end{figure}
 
-The goal is to extract a structured knowledge base from unstructured medical
-text \cite{ré2014feature}. \Cref{fig:architecture} illustrates the proposed 
-architecture, which proceeds as follows. 
-First, medical literature relevant to the diseases or conditions of interest 
-is collected. Then, a carefully designed prompt is used to convert this literature 
-into ASP code via a large language model. 
-The generated ASP code is incorporated into a growing knowledge base, 
-which is further enriched with patient-specific data such as symptoms 
-and examination results. Finally, an ASP solver reasons over the complete 
-knowledge base to produce a diagnosis--or a set of possible diagnoses--in 
-the form of answer sets.
 
 \paragraph{\textbf{Prompt Construction}}
-
-While large language models demonstrate strong instruction-following capabilities, 
-their reliability remains limited in practice \cite{bowman2023things}. 
-To address this, a relatively recent methodology known as prompt engineering 
-has emerged \cite{liu2021pretrain, promptingguidePromptEngineering}. 
-In this work, prompts are carefully crafted to guide the model in 
-converting medical literature into ASP code suitable for execution 
-by a solver (\cref{fig:bad-prompt}, \cref{fig:good-prompt}).
+While large language models exhibit strong instruction-following capabilities, 
+their reliability in high-stakes domains remains limited \cite{bowman2023things}. 
+To improve robustness, a wide range of prompting strategies have been developed 
+and refined over the past several years \cite{liu2021pretrain, promptingguidePromptEngineering}. 
+In \sys, carefully designed prompts are employed to guide the model in translating medical literature 
+into ASP code suitable for execution by a solver (\cref{fig:bad-prompt}, \cref{fig:good-prompt}).
 \footnote{The example of a poorly constructed prompt is included for educational purposes, to highlight common pitfalls in prompt design.}
 
-% Ioanna: I commented out the bad prompt
 \begin{figure}[!h]
 \centering
 \begin{prompt}
@@ -414,6 +379,7 @@ Write a Clingo script that diagnoses pneumonia based on these symptoms.
 \end{prompt}
 
 \begin{commandline}
+\footnotesize
 \begin{verbatim}
 
 symptom(cough).
@@ -452,7 +418,7 @@ Add rules that link one symptom to another (e.g., symptom propagation or depende
 
 
 \begin{commandline}
-\scriptsize
+\footnotesize
 \begin{verbatim}
 symptom(cough).
 symptom(cough_with_mucus).
@@ -482,7 +448,7 @@ diagnosis(pneumonia) :- has(symptom(cough_with_mucus)),
 \label{fig:good-prompt}
 \end{figure}
 
-\paragraph{\textbf{Construction of a Logical Program}}
+\paragraph{\textbf{Logical Program Construction}}
 
 The knowledge base is initialized with a set of symptoms and medical indicators represented as:
 \begin{align}
@@ -538,10 +504,11 @@ favoring diagnoses based on known patient information:
 
 This formulation guarantees that at least one diagnosis is produced, 
 relying as much as possible on available clinical data rather than hypothetical assumptions.
+\\
 
 \paragraph{\textbf{Diagnostic Explainability}}
 
-Symbolic artificial intelligence offers a significant advantage 
+Symbolic Artifical Intelligence offers a significant advantage 
 over subsymbolic methods in terms of explainability. 
 In symbolic systems, the relationships between facts and conclusions are explicitly defined, 
 enabling transparent reasoning. However, ASP solvers such as \textit{Clingo} do not, 
@@ -553,31 +520,54 @@ the logic program shown below is accompanied by a causal graph
 in \cref{fig:causal-g}, which illustrates the connections 
 between rules and their inferred outcomes. 
 This structure supports the interpretability of conclusions derived by a symbolic logic solver.
-\begin{equation}
-\begin{aligned}[b]
-    l :& punish \longleftarrow drive, drunk \\
-    m :& punish \longleftarrow resist \\
-    e :& prison \longleftarrow punish \\
-    d :& drive \\
-    k :& drunk \\
-    r :& resist \\
-\end{aligned}
-\label{eq:example-cg}
-\end{equation}
-% https://docs.google.com/drawings/d/1Ing4GFH2kbniiHI5rbXzw-xcAUQAxWAJpgmg4tz1fzc/edit?usp=sharing
-\begin{figure}
+% \begin{equation}
+% \begin{aligned}[b]
+%     l :& punish \longleftarrow drive, drunk \\
+%     m :& punish \longleftarrow resist \\
+%     e :& prison \longleftarrow punish \\
+%     d :& drive \\
+%     k :& drunk \\
+%     r :& resist \\
+% \end{aligned}
+% \label{eq:example-cg}
+% \end{equation}
+% % https://docs.google.com/drawings/d/1Ing4GFH2kbniiHI5rbXzw-xcAUQAxWAJpgmg4tz1fzc/edit?usp=sharing
+% \begin{figure}
+%     \centering
+%     \includegraphics{assets/causal_g.pdf}
+%     \caption{Causal graph of logic program (\cref{eq:example-cg}).}
+%     \label{fig:causal-g}
+% \end{figure}
+\begin{figure}[!h]
     \centering
-    \includegraphics{assets/causal_g.pdf}
+    \begin{minipage}{0.48\textwidth}
+    \begin{equation}
+    \begin{aligned}[b]
+        l :& punish \longleftarrow drive, drunk \\
+        m :& punish \longleftarrow resist \\
+        e :& prison \longleftarrow punish \\
+        d :& drive \\
+        k :& drunk \\
+        r :& resist \\
+    \end{aligned}
+    \label{eq:example-cg}
+    \end{equation}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{assets/causal_g.pdf}
     \caption{Causal graph of logic program (\cref{eq:example-cg}).}
     \label{fig:causal-g}
-\end{figure}
+    \end{minipage}
+    \end{figure}
+    
 
 The tool \textit{xclingo}~\cite{Cabalar_2020} 
 enables the visualization of justifications for results produced by the \textit{Clingo} solver. 
 It does so by incorporating a \src{trace} that corresponds to the rules of the logic program. 
 Providing clear explanations of how the framework reaches specific conclusions helps users identify 
 potential errors in the construction of the knowledge base and offers transparency for the final outcome. 
-This is especially important in medical contexts, where interpretability and trust are critical.
 
 \section{Results}
 
@@ -646,11 +636,11 @@ Similarly, \texttt{high\_fever} is explained via the intermediate symptom \textt
 which itself is supported by \texttt{loss\_of\_appetite}. 
 These explanations demonstrate how \sys combines direct observations 
 and transitive symptom relationships encoded in the knowledge base to 
-construct a transparent and interpretable diagnostic path.
+construct a transparent and explainable diagnostic path.
 
 \section{Conclusion}
 
-This work presents a method for automatic disease prediction 
+This work presents \sys, a framework for automatic disease prediction 
 that encodes medical literature and transforms it into ASP code using an LLM. 
 It describes the roles of both LLMs and ASP, emphasizing how each contributes to the overall framework. 
 The \sys architecture is outlined, along with implementation details for constructing effective prompts 
@@ -658,9 +648,11 @@ and structuring rules within the ASP knowledge base.
 The method includes predictions for a set of diseases based on the constructed knowledge bases. 
 Results show that this approach achieves high-accuracy predictions and provides interpretable explanations.
 
-Future work includes integrating retrieval-augmented generation (RAG) to improve the factual accuracy 
-and reliability of the ASP code, and fine-tuning the LLM on clinical reasoning tasks to enhance rule quality. 
-Expanding the approach to cover additional diseases is also a key direction.
+Future work will focus on integrating retrieval-augmented generation (RAG) 
+to ground ASP code in reliable medical sources, fine-tuning LLMs on clinical reasoning tasks 
+to improve the quality and consistency of generated rules, 
+and extending the framework to additional diseases to demonstrate scalability in diverse diagnostic settings.
+
 \newpage
 \bibliographystyle{unsrt}
 \bibliography{bib}
