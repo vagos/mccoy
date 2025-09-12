@@ -1,15 +1,16 @@
-\documentclass[10pt,leqno]{amsart}
+\documentclass[11pt,leqno]{amsart}
 \usepackage{graphicx}
 \baselineskip=16pt
 \usepackage{indentfirst,csquotes}
+\usepackage[margin=1in]{geometry}
 
-\topmargin= .5cm
-\textheight= 20cm
-\textwidth= 32cc
-\baselineskip=16pt
+% \topmargin= .5cm
+% \textheight= 20cm
+% \textwidth= 32cc
+% \baselineskip=16pt
 
-\evensidemargin= .9cm
-\oddsidemargin= .9cm
+% \evensidemargin= .9cm
+% \oddsidemargin= .9cm
 
 \usepackage{datetime}
 \usepackage{wrapfig}
@@ -180,23 +181,38 @@ that leverages the strengths of both paradigms.
 
 \section{Introduction}
 
-The development of automatic disease prediction systems 
-is crucial for enhancing healthcare and supporting medical 
-professionals in timely and accurate diagnosis. 
-Symbolic artificial intelligence (AI), particularly ASP, 
-has been explored in this context due to its ability 
-to support structured and explainable reasoning. 
-However, the construction of expressive knowledge bases 
-remains a significant barrier to practical adoption.
+Accurate and timely diagnosis is critical for effective treatment and patient outcomes, 
+but building automated systems that can deliver this reliably remains challenging. 
+Symbolic AI---and ASP in particular---offers transparent reasoning, 
+but adoption has been hindered by the high cost of 
+authoring and maintaining rich, domain-specific knowledge bases at scale. 
+Meanwhile, LLMs show strong performance on medical text 
+but often produce unreliable or unstructured outputs, limiting their use in 
+high-stakes clinical settings.
 
-This paper introduces \sys, a framework 
-that combines LLMs with the 
-formal reasoning capabilities of ASP.
-\sys extracts and encodes medical knowledge from text into ASP code,
-enabling interpretable and accurate diagnosis 
-of diseases based on patient symptoms. 
+\sys addresses this gap by coupling LLMs with ASP to automatically construct 
+explainable diagnostic programs from medical literature. 
+\sys uses prompting to translate disease-specific literature into ASP rules, 
+augments these rules with patient symptoms and indicators, 
+and invokes an ASP solver to produce candidate diagnoses together with explicit logical justifications.
 
-\section{Background}
+Concretely, this work:
+\begin{itemize}
+    \item Builds a framework that turns medical text into an executable ASP knowledge base.
+    \item Uses prompts to produce modular rules (including alternatives and symptom links) for better explainability and partial inference.
+    \item Adds solver-based explanations to show clear symptom $\rightarrow$ rule $\rightarrow$ diagnosis chains.
+    \item Demonstrates accurate results on real patient data while keeping the reasoning transparent.
+\end{itemize}
+
+On publicly available patient records, \sys achieves 
+95–-100\% accuracy across selected diseases, while producing transparent explanations for each diagnosis.
+
+This paper begins with background on LLMs and ASP (\cref{sec:background}), 
+then presents the \sys methodology (\cref{sec:methodology}), 
+evaluates the framework on patient data (\cref{sec:results}),
+and concludes with limitations and future directions (\cref{sec:conclusion}).
+
+\section{Background}\label{sec:background}
 
 \paragraph{\textbf{Large Language Models}}
 LLMs \cite{zhao2023survey} are advanced computational systems 
@@ -292,7 +308,7 @@ which correspond to the solutions of the original problem.
         \node[draw, dotted, fit=(grounder) (solver), inner sep=2mm, label=above:{Solving}] {};
 \end{tikzpicture}
     \end{center}
-		\caption{Solving a problem using ASP.}
+		\caption{\textbf{Solving a problem with ASP}. A problem is first modeled as a program, then transformed into ground rules by a grounder. A solver computes the stable models, which are interpreted as solutions.}
     \label{fig:asp-solving}
 \end{figure}
 
@@ -336,7 +352,8 @@ A specialized lightweight LLM has also been trained to generate valid ASP code,
 improving the automation of rule-based medical reasoning \cite{coppolillo2024llasp}.
 Collectively, these systems assist in building reliable and clear reasoning pipelines 
 for disease diagnosis by combining language understanding with rule-based validation.
-\section{Methodology}
+
+\section{Methodology} \label{sec:methodology}
 
 \paragraph{\textbf{Architecture}}
 
@@ -569,7 +586,7 @@ It does so by incorporating a \src{trace} that corresponds to the rules of the l
 Providing clear explanations of how the framework reaches specific conclusions helps users identify 
 potential errors in the construction of the knowledge base and offers transparency for the final outcome. 
 
-\section{Results}
+\section{Results}\label{sec:results}
 
 Evaluation was conducted using publicly available patient data.\footnote{\url{https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset?select=dataset.csv}}
 Each patient's list of symptoms serves as input.  
@@ -638,7 +655,7 @@ These explanations demonstrate how \sys combines direct observations
 and transitive symptom relationships encoded in the knowledge base to 
 construct a transparent and explainable diagnostic path.
 
-\section{Conclusion}
+\section{Conclusion}\label{sec:conclusion}
 
 This work presents \sys, a framework for automatic disease prediction 
 that encodes medical literature and transforms it into ASP code using an LLM. 
