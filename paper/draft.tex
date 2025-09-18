@@ -658,19 +658,16 @@ construct a transparent and explainable diagnostic path.
 
 \section{Conclusion}\label{sec:conclusion}
 
-This work presents \sys, a framework for automatic disease prediction 
-that encodes medical literature and transforms it into ASP code using an LLM. 
-It describes the roles of both LLMs and ASP, emphasizing how each contributes to the overall framework. 
-The \sys architecture is outlined, along with implementation details for constructing effective prompts 
-and structuring rules within the ASP knowledge base.
-The method includes predictions for a set of diseases based on the constructed knowledge bases. 
-Results show that this approach achieves high-accuracy predictions and provides interpretable explanations.
+This paper presents \sys, a framework for disease prediction using LLMs and ASP. 
+The system uses LLMs to extract knowledge from medical texts and translate it into ASP rules, 
+which then drive predictions and provide interpretable explanations. 
+The architecture, prompt design, and rule structuring in the knowledge base are described.
+Experiments show that \sys can predict diseases accurately 
+while keeping the reasoning process transparent.
 
-Future work will focus on integrating retrieval-augmented generation (RAG) 
-to ground ASP code in reliable medical sources, fine-tuning LLMs on clinical reasoning tasks 
-to improve the quality and consistency of generated rules, 
-and extending the framework to additional diseases to demonstrate scalability in diverse diagnostic settings.
-
+Future work will focus on grounding ASP rules in reliable sources 
+through retrieval-augmented generation, fine-tuning LLMs for clinical reasoning, 
+and scaling the framework to cover a wider range of diseases.
 \newpage
 \bibliographystyle{unsrt}
 \bibliography{bib}
