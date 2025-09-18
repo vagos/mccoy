@@ -180,37 +180,38 @@ that leverages the strengths of both paradigms.
 \end{abstract}
 
 \section{Introduction}
+Getting an accurate diagnosis quickly can make all the difference in patient outcomes, 
+but building automated systems that practitioners can actually trust is still a major challenge. 
+Symbolic AI, and in particular Answer Set Programming (ASP), provides clear logical reasoning \cite{Brewka2011,Gelfond_Kahl_2014}. 
+However, its adoption has been limited because constructing and maintaining large, 
+domain-specific knowledge bases is very labor-intensive.
+On the other hand, Large language models (LLMs) achieve strong results on tasks
+such as medical question answering and clinical note summarization \cite{Singhal2022LargeLM,Singhal2023,Zheng2024LLMmed}, 
+but their tendency to produce inconsistent or opaque outputs makes them risky for clinical use \cite{aljohani2025comprehensivesurveytrustworthinesslarge, rudin2019stopexplainingblackbox}.
 
-Accurate and timely diagnosis is critical for effective treatment and patient outcomes, 
-but building automated systems that can deliver this reliably remains challenging. 
-Symbolic AI---and ASP in particular---offers transparent reasoning, 
-but adoption has been hindered by the high cost of 
-authoring and maintaining rich, domain-specific knowledge bases at scale. 
-Meanwhile, LLMs show strong performance on medical text 
-but often produce unreliable or unstructured outputs, limiting their use in 
-high-stakes clinical settings.
-
-\sys addresses this gap by coupling LLMs with ASP to automatically construct 
-explainable diagnostic programs from medical literature. 
-\sys uses prompting to translate disease-specific literature into ASP rules, 
-augments these rules with patient symptoms and indicators, 
-and invokes an ASP solver to produce candidate diagnoses together with explicit logical justifications.
+In clinical decision support, the real goal is to get the best of both worlds: 
+systems that reason accurately while still being easy for practitioners to trust and use. 
+\sys takes a step in that direction by combining the strengths of LLMs and ASP. 
+Instead of requiring experts to hand-craft large knowledge bases, 
+\sys automatically converts medical literature into ASP rules. 
+These rules are then enriched with patient symptoms and clinical indicators, 
+and passed through an ASP solver to produce diagnostic suggestions together with logical justifications.
 
 Concretely, this work:
 \begin{itemize}
-    \item Builds a framework that turns medical text into an executable ASP knowledge base.
-    \item Uses prompts to produce modular rules (including alternatives and symptom links) for better explainability and partial inference.
-    \item Adds solver-based explanations to show clear symptom $\rightarrow$ rule $\rightarrow$ diagnosis chains.
-    \item Demonstrates accurate results on real patient data while keeping the reasoning transparent.
+    \item Introduces a framework that turns medical text into an executable ASP knowledge base.
+    \item Uses prompts to generate modular rules (including alternatives and symptom links) that the solver applies for reasoning.
+    \item Provides solver-based explanations showing how symptoms lead to rules and then to diagnoses.
+    \item Demonstrates accurate results on real patient data while keeping the reasoning fully transparent.
 \end{itemize}
 
-On publicly available patient records, \sys achieves 
-95–-100\% accuracy across selected diseases, while producing transparent explanations for each diagnosis.
+On public patient records, \sys reaches 95–100\% predictive accuracy on selected diseases, 
+while giving transparent explanations for each diagnosis.
 
-This paper begins with background on LLMs and ASP (\cref{sec:background}), 
-then presents the \sys methodology (\cref{sec:methodology}), 
-evaluates the framework on patient data (\cref{sec:results}),
-and concludes with limitations and future directions (\cref{sec:conclusion}).
+The paper begins with background on LLMs and ASP (\cref{sec:background}), 
+then details the \sys methodology (\cref{sec:methodology}), 
+evaluates the approach on patient data (\cref{sec:results}), 
+and concludes with a discussion of limitations and future directions (\cref{sec:conclusion}).
 
 \section{Background}\label{sec:background}
 
