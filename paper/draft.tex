@@ -196,20 +196,18 @@ Instead of requiring experts to hand-craft large knowledge bases,
 \sys automatically converts medical literature into ASP rules. 
 These rules are then enriched with patient symptoms and clinical indicators, 
 and passed through an ASP solver to produce diagnostic suggestions together with logical justifications.
-
-Concretely, this work:
-\begin{itemize}
-    \item Introduces a framework that turns medical text into an executable ASP knowledge base.
-    \item Uses prompts to generate modular rules (including alternatives and symptom links) that the solver applies for reasoning.
-    \item Provides solver-based explanations showing how symptoms lead to rules and then to diagnoses.
-    \item Demonstrates accurate results on real patient data while keeping the reasoning fully transparent.
-\end{itemize}
-
 On public patient records, \sys reaches 95–100\% predictive accuracy on selected diseases, 
 while giving transparent explanations for each diagnosis.
 
+% Concretely, this work:
+% \begin{itemize}
+%     \item Introduces a framework that combines the flexibility of LLMs with the explanability of ASP for disease diagnosis.
+%     \item Provides solver-based explanations showing how symptoms lead to rules and then to diagnoses.
+%     \item Demonstrates accurate results on real patient data while keeping the reasoning fully transparent.
+% \end{itemize}
+
 The paper begins with background on LLMs and ASP (\cref{sec:background}), 
-then details the \sys methodology (\cref{sec:methodology}), 
+then details the \sys framework (\cref{sec:methodology}), 
 evaluates the approach on patient data (\cref{sec:results}), 
 and concludes with a discussion of limitations and future directions (\cref{sec:conclusion}).
 
@@ -286,7 +284,7 @@ Next, a grounder (e.g., gringo \cite{Gebser2014}) transforms the program into a 
 Finally, a solver (e.g., clasp \cite{Holldobler2014}) computes the stable models (answer sets), 
 which correspond to the solutions of the original problem.
 
-\begin{figure}[htb]
+\begin{figure}[t]
     \begin{center}
 \begin{tikzpicture}[node distance=2.9cm]
         \node [simple-rect] (problem)  at (0,0) {Problem};
@@ -367,7 +365,7 @@ This knowledge base is further enriched with patient-specific information such a
 An ASP solver subsequently reasons over the combined knowledge base and produces a diagnosis
 --or a set of candidate diagnoses--in the form of answer sets.
 
-\begin{figure}[!h]
+\begin{figure}[t]
     % https://docs.google.com/drawings/d/1cr2lTIjSUxfQH54CZui8vGqLS2keOfW41i4g4uGfwhw/edit?usp=sharing
     \includegraphics[width=\textwidth]{assets/mccoy.pdf}
     \caption{\textbf{\sys overview.} The diagnostic process begins by transforming medical literature 
@@ -556,7 +554,7 @@ This structure supports the interpretability of conclusions derived by a symboli
 %     \caption{Causal graph of logic program (\cref{eq:example-cg}).}
 %     \label{fig:causal-g}
 % \end{figure}
-\begin{figure}[!h]
+\begin{figure}[t]
     \centering
     \begin{minipage}{0.48\textwidth}
     \begin{equation}
@@ -572,13 +570,13 @@ This structure supports the interpretability of conclusions derived by a symboli
     \end{equation}
     \end{minipage}
     \hfill
-    \begin{minipage}{0.48\textwidth}
+    \begin{minipage}{0.45\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{assets/causal_g.pdf}
+    \includegraphics[width=.5\textwidth]{assets/causal_g.pdf}
     \caption{Causal graph of logic program (\cref{eq:example-cg}).}
     \label{fig:causal-g}
     \end{minipage}
-    \end{figure}
+\end{figure}
     
 
 The tool \textit{xclingo}~\cite{Cabalar_2020} 
@@ -668,7 +666,6 @@ while keeping the reasoning process transparent.
 Future work will focus on grounding ASP rules in reliable sources 
 through retrieval-augmented generation, fine-tuning LLMs for clinical reasoning, 
 and scaling the framework to cover a wider range of diseases.
-\newpage
 \bibliographystyle{unsrt}
 \bibliography{bib}
 
