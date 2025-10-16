@@ -1,0 +1,27 @@
+---
+name: paper
+on: push
+permissions:
+  contents: write
+jobs:
+  paper:
+    name: Build paper
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build LaTeX paper
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: draft.tex
+          working_directory: paper
+
+      - name: Release PDF
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifactContentType: application/pdf
+          makeLatest: true
+          name: Latest
+          tag: latest
+          artifacts: paper/draft.pdf
