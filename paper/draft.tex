@@ -15,11 +15,9 @@
 \usepackage{datetime}
 \usepackage{wrapfig}
 \usepackage{enumerate}
-\usepackage{graphicx}
 \usepackage{caption}
 \usepackage{siunitx}
 \usepackage{subcaption}
-\usepackage{amsmath}
 \usepackage{array,tabularx}
 \usepackage{chngcntr}
 \usepackage{afterpage}
@@ -36,11 +34,9 @@
 \usepackage{varwidth}
 \usepackage{fmtcount}
 \usepackage{tikz}
-\usepackage{array}
 \usepackage[framemethod=tikz]{mdframed} % Allows defining custom boxed/framed environments
 \usepackage{cleveref}
 \usepackage{microtype}
-\usepackage{dirtytalk}
 \usepackage{booktabs}
 
 \usetikzlibrary{trees}
@@ -50,6 +46,13 @@
 \usetikzlibrary{chains,shapes.multipart}
 \usetikzlibrary{external}
 \usetikzlibrary{matrix}
+
+\newcommand{\eg}{{e.g.}, }
+\newcommand{\ie}{{i.e.}, }
+\newcommand{\etc}{{etc.}\xspace}
+\newcommand{\vs}{{vs.} }
+\newcommand{\cf}[1]{(\emph{Cf}.\S\ref{#1})}
+\newcommand{\sx}[1]{(\cref{#1})}
 
 \tikzstyle{rect} = [rectangle,fill=white, text centered]
 \tikzstyle{database} = [draw, cylinder, shape border rotate = 90, aspect = 0.2]
@@ -125,7 +128,7 @@
 		\draw(P-|O)++(-0.5em,0)node(tmp1){};
 		\draw(P-|O)++(0.5em,0)node(tmp2){};
 		\fill[black,rotate around={45:(P-|O)}](tmp1)rectangle(tmp2);
-		\node at(P-|O){\color{white}\scriptsize\bf ?};
+		\node at(P-|O){\color{white}\scriptsize\bf !};
 		\draw[very thick](P-|O)++(0,-1em)--(O);%--(O-|P);
 	}
 }
@@ -150,18 +153,15 @@
 }
 \makeatother
 
-\title[\sys: Automatic Disease Diagnosis Using LLMs \& ASP]{\sys: Automatic Disease Diagnosis Using Large Language Models and Answer Set Programming}
+\title[\sys: A PoC for Explainable Disease Diagnosis Using LLMs \& ASP]{\sys: A Proof-of-Concept for Explainable Disease Diagnosis Using Large Language Models and Answer Set Programming}
 
 \author[Ioanna Gemou]{Ioanna Gemou}
 \author[Evangelos Lamprou]{Evangelos Lamprou}
-\thanks{Originally submitted as part of a research competition on 1st June 2023.}
+\thanks{Originally submitted as part of a university research competition on 1st June 2023.}
 
 \begin{document}
 
 \maketitle
-\vspace{-1.5em} % adjust as needed
-{\small\itshape \centering Originally submitted as part of a university research competition on 1st June 2023.\par}
-\vspace{0.5em} % optional: add space before body
 
 \begin{abstract}
 Accurate disease prediction is vital for timely intervention, 
@@ -175,7 +175,7 @@ LLMs extract medical knowledge from text and translate it into ASP code,
 while ASP enables structured, explainable reasoning. 
 This integration yields a robust, interpretable prediction framework 
 that leverages the strengths of both paradigms. 
-\sys shows strong performance on real patient data.
+\sys shows strong performance on public datasets.
 % \sys accurately predicts diseases based on symptoms derived from medical literature.
 \end{abstract}
 
@@ -185,9 +185,9 @@ but building automated systems that practitioners can actually trust is still a 
 Symbolic AI, and in particular Answer Set Programming (ASP), provides clear logical reasoning \cite{Brewka2011,Gelfond_Kahl_2014}. 
 However, its adoption has been limited because constructing and maintaining large, 
 domain-specific knowledge bases is very labor-intensive.
-On the other hand, Large language models (LLMs) achieve strong results on tasks
+On the other hand, Large Language Models (LLMs) achieve strong results on tasks
 such as medical question answering and clinical note summarization \cite{Singhal2022LargeLM,Singhal2023,Zheng2024LLMmed}, 
-but their tendency to produce inconsistent or opaque outputs makes them risky for clinical use \cite{aljohani2025comprehensivesurveytrustworthinesslarge, rudin2019stopexplainingblackbox}.
+but their tendency to produce inconsistent or opaque outputs makes them risky for clinical use~\cite{aljohani2025comprehensivesurveytrustworthinesslarge, rudin2019stopexplainingblackbox}.
 
 In clinical decision support, the real goal is to get the best of both worlds: 
 systems that reason accurately while still being easy for practitioners to trust and use. 
@@ -196,7 +196,7 @@ Instead of requiring experts to hand-craft large knowledge bases,
 \sys automatically converts medical literature into ASP rules. 
 These rules are then enriched with patient symptoms and clinical indicators, 
 and passed through an ASP solver to produce diagnostic suggestions together with logical justifications.
-On public patient records, \sys reaches 95–100\% predictive accuracy on selected diseases, 
+On public datasets, \sys reaches 95–100\% predictive accuracy on selected diseases, 
 while giving transparent explanations for each diagnosis.
 
 % Concretely, this work:
@@ -218,15 +218,15 @@ LLMs \cite{zhao2023survey} are advanced computational systems
 designed to understand and generate human language. 
 Developed using cutting-edge machine learning techniques, 
 these models can produce text that closely mirrors human linguistic patterns.
-Modern architectures such as \textit{GPT-5} \cite{openai2023gpt4, gpt5}, 
+Modern architectures such as \textit{GPT-5}~\cite{gpt5}
 are trained on massive corpora spanning diverse domains, 
 enabling them to acquire broad, cross-disciplinary knowledge. 
 LLMs use deep learning algorithms \cite{Sarker2021} 
-and specifically transformer networks \cite{Dosovitskiy2020} 
+and specifically transformer networks \cite{Vaswani2017} 
 to analyze and understand the relationships between words, phrases, and sentences. 
 By capturing patterns and structures in the training data, 
 they can generate coherent and relevant responses based on given prompts.
-The term “large” refers to the billions of parameters 
+The term ``large" often refers to models with billions of parameters 
 that allow these models to generate context-aware responses. 
 The basic premise of an LLM is its ability to predict 
 the next word (referred to as a token) based on the text it has observed so far, 
@@ -242,7 +242,7 @@ for clinical decision support \cite{Singhal2023} and
 biomedical knowledge retrieval \cite{Luo2022}.
 Among their capabilities, LLMs excel at transforming text from one representation to another, 
 making them powerful tools for a wide range of natural language processing tasks. 
-This characteristic is particurarly relevant to the present work, 
+This characteristic is particularly relevant to the present work, 
 which focuses on the effective encoding of medical literature. \\
 
 \paragraph{\textbf{Challenges in applying LLMs}}
@@ -261,8 +261,7 @@ Answer Set Programming (ASP) \cite{Eiter2009} is a declarative problem-solving p
 rooted in logic programming and non-monotonic reasoning \cite{Brewka2011}. 
 The formal semantics of stable models and the foundational ASP language 
 were first introduced by Gelfond and Lifschitz \cite{Gelfond2000, gel88}.
-Programming with this approach is done in a family of languages 
-sometimes referred to as \textit{AnsProlog} \cite{Gelfond2002}.
+These are implemented in a family of languages commonly known as \textit{AnsProlog} \cite{Gelfond2002}.
 
 The central idea of ASP is to represent a problem 
 declaratively using logical rules, facts, and constraints. 
@@ -280,8 +279,8 @@ In ASP, the process of deriving solutions from a problem specification
 typically follows a sequence of well-defined steps \cite{Gebser2013}, 
 as illustrated in \cref{fig:asp-solving}. 
 First, the problem is modeled using the ASP language. 
-Next, a grounder (e.g., gringo \cite{Gebser2014}) transforms the program into a set of basic rules and facts. 
-Finally, a solver (e.g., clasp \cite{Holldobler2014}) computes the stable models (answer sets), 
+Next, a grounder (\eg gringo \cite{Gebser2014}) transforms the program into a set of basic rules and facts. 
+Finally, a solver (\eg clasp \cite{Holldobler2014}) computes the stable models (answer sets), 
 which correspond to the solutions of the original problem.
 
 \begin{figure}[t]
@@ -297,7 +296,7 @@ which correspond to the solutions of the original problem.
         
         \node [simple-rect, above of=stable-models] (solution) {Solution};
 
-        \draw [arrow] (problem) -- node[right] {\textbf{Modelling}} (program);
+        \draw [arrow] (problem) -- node[right] {\textbf{Modeling}} (program);
         \draw [arrow] (stable-models) -- node[left] {Interpreting} (solution);
 
         \draw [arrow-small] (program) -- node[above] {} (grounder);
@@ -312,9 +311,9 @@ which correspond to the solutions of the original problem.
 \end{figure}
 
 Several solvers for ASP have been developed, such as DLV \cite{Xia2020}. 
-This work uses the ASP system clingo, 
+This work uses the ASP system \src{clingo}, 
 which integrates the gringo grounder \cite{Gebser2014} with the clasp solver \cite{Holldobler2014} into a single system. 
-Clingo also offers a powerful Python API, enabling the solver's integration into other applications.
+The Clingo system also offers a powerful Python API, enabling integration into other applications.
 
 \section{Related work}
 \paragraph{\textbf{ASP for disease diagnosis}}
@@ -362,8 +361,7 @@ The process begins with the collection of medical literature relevant to the dis
 A carefully designed prompt is then used to guide an LLM in translating this literature into ASP code, 
 which is incorporated into a growing knowledge base. 
 This knowledge base is further enriched with patient-specific information such as symptoms and examination results. 
-An ASP solver subsequently reasons over the combined knowledge base and produces a diagnosis
---or a set of candidate diagnoses--in the form of answer sets.
+An ASP solver subsequently reasons over the combined knowledge base and produces a diagnosis, or a set of plausible diagnoses.
 
 \begin{figure}[t]
     % https://docs.google.com/drawings/d/1cr2lTIjSUxfQH54CZui8vGqLS2keOfW41i4g4uGfwhw/edit?usp=sharing
@@ -377,7 +375,7 @@ An ASP solver subsequently reasons over the combined knowledge base and produces
 
 
 \paragraph{\textbf{Prompt Construction}}
-While large language models exhibit strong instruction-following capabilities, 
+While Large Language Models exhibit strong instruction-following capabilities, 
 their reliability in high-stakes domains remains limited \cite{bowman2023things}. 
 To improve robustness, a wide range of prompting strategies have been developed 
 and refined over the past several years \cite{liu2021pretrain, promptingguidePromptEngineering}. 
@@ -391,7 +389,7 @@ into ASP code suitable for execution by a solver (\cref{fig:bad-prompt}, \cref{f
 \textit{Medical Text...}
 
 The paragraph above lists common symptoms of pneumonia.
-Write a Clingo script that diagnoses pneumonia based on these symptoms.
+Write a clingo script that diagnoses pneumonia based on these symptoms.
 \end{prompt}
 
 \begin{commandline}
@@ -421,14 +419,13 @@ diagnosis(pneumonia) :- symptom(cough),
 \textit{Medical Text...}
 
 The paragraph above lists common symptoms of pneumonia.
-Write a Clingo script that diagnoses pneumonia based on these symptoms.
-
+Write a clingo script that diagnoses pneumonia based on these symptoms.
 In the diagnosis rule, use a structure like:
 
 \src{diagnosis(pneumonia) :- has(symptom(x)), has(symptom(y)) ...}
 
 Include alternative diagnoses that share overlapping symptoms with pneumonia.
-Add rules that link one symptom to another (e.g., symptom propagation or dependency).
+Add rules that link one symptom to another (\eg symptom propagation or dependency).
 
 \end{prompt}
 
@@ -471,8 +468,9 @@ The knowledge base is initialized with a set of symptoms and medical indicators 
     symptom(s). & \; s \in \{ \text{cough, chest pain, rash}, \dots \} \\
     indicator(i). & \; i \in \{ \text{low MCV, high TIBC}, \dots \}
 \end{align}
+Let $S$ denote the set of symptoms and $I$ the set of indicators.
 
-A patient exhibiting a specific symptom or testing positive for a particular indicator is represented as:
+A patient exhibiting a specific symptom or testing positive for an indicator is represented as:
 \begin{equation}
     has(x). \; x \in S \cup I
 \end{equation}
@@ -506,8 +504,7 @@ into the knowledge base when patient data is incomplete:
     \{ add(symptom(S)) : symptom(S) \}.
 \end{equation}
 
-To ensure that the solver identifies at least one diagnosis, 
-the following integrity constraint is imposed:
+The following integrity constraint imposes at least one diagnosis:
 \begin{equation}
     \bot \longleftarrow \sim diagnosis(\_)
 \end{equation}
@@ -515,7 +512,7 @@ the following integrity constraint is imposed:
 Finally, the solver minimizes assumptions by penalizing added symptoms, 
 favoring diagnoses based on known patient information:
 \begin{equation}
-    \#minimize \{ 1, S : add(S) \}
+    \#minimize \{ 1, S : add(symptom(S)) \}
 \end{equation}
 
 This formulation guarantees that at least one diagnosis is produced, 
@@ -524,13 +521,10 @@ relying as much as possible on available clinical data rather than hypothetical 
 
 \paragraph{\textbf{Diagnostic Explainability}}
 
-Symbolic Artifical Intelligence offers a significant advantage 
+Symbolic Artificial Intelligence offers a significant advantage 
 over subsymbolic methods in terms of explainability. 
 In symbolic systems, the relationships between facts and conclusions are explicitly defined, 
-enabling transparent reasoning. However, ASP solvers such as \textit{Clingo} do not, 
-at the time of writing,\footnote{At the time of writing this paper.} 
-provide intuitive traces of their reasoning processes. 
-Prior work has explored methods for associating logical propositions 
+enabling transparent reasoning. Prior work has explored methods for associating logical propositions 
 with their justifications \cite{cabalar2014causal}. For example, 
 the logic program shown below is accompanied by a causal graph 
 in \cref{fig:causal-g}, which illustrates the connections 
@@ -573,22 +567,21 @@ This structure supports the interpretability of conclusions derived by a symboli
     \begin{minipage}{0.45\textwidth}
     \centering
     \includegraphics[width=.5\textwidth]{assets/causal_g.pdf}
-    \caption{Causal graph of logic program (\cref{eq:example-cg}).}
+    \caption{Causal graph of logic program in \cref{eq:example-cg}.}
     \label{fig:causal-g}
     \end{minipage}
 \end{figure}
     
 
-The tool \textit{xclingo}~\cite{Cabalar_2020} 
-enables the visualization of justifications for results produced by the \textit{Clingo} solver. 
-It does so by incorporating a \src{trace} that corresponds to the rules of the logic program. 
-Providing clear explanations of how the framework reaches specific conclusions helps users identify 
-potential errors in the construction of the knowledge base and offers transparency for the final outcome. 
+The tool \src{xclingo}~\cite{Cabalar_2020} 
+enables the visualization of justifications for results produced by the \src{clingo} solver. 
+It does so by incorporating a trace that corresponds to the rules of the logic program. 
+This can help identify potential flaws in \sys's knowledge base and reasoning process.
 
 \section{Results}\label{sec:results}
 
-Evaluation was conducted using publicly available patient data.\footnote{\url{https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset?select=dataset.csv}}
-Each patient's list of symptoms serves as input.  
+Evaluation was conducted using a publicly available dataset.\footnote{\url{https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset?select=dataset.csv}}
+Each record's list of symptoms serves as input.  
 The knowledge base—comprising ASP rules automatically derived  
 from medical literature—infers potential diagnoses.  
 A prediction is considered correct when the disease inferred  
@@ -602,7 +595,7 @@ by the ASP solver matches the actual diagnosis listed in the dataset.
     \toprule
     Diseases & Size & Accuracy \\
     \midrule
-    Chicken Pox    &  66  & 95\% \\
+    Chickenpox     &  66  & 95\% \\
     Pneumonia      &  75  & 100\% \\
     Common Cold    &  44  & 100\% \\
     \bottomrule
@@ -666,6 +659,8 @@ while keeping the reasoning process transparent.
 Future work will focus on grounding ASP rules in reliable sources 
 through retrieval-augmented generation, fine-tuning LLMs for clinical reasoning, 
 and scaling the framework to cover a wider range of diseases.
+\newpage
+
 \bibliographystyle{unsrt}
 \bibliography{bib}
 
