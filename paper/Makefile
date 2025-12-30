@@ -24,3 +24,6 @@ distclean:
 
 view: all
 	open $(PDF)
+
+paper.tar.gz: $(TEX_SRC) bib.bib $(IMG_FILES)
+	tar -czvf paper.tar.gz *

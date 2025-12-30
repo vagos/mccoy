@@ -157,7 +157,7 @@
 
 \author[Ioanna Gemou]{Ioanna Gemou}
 \author[Evangelos Lamprou]{Evangelos Lamprou}
-\thanks{Originally submitted as part of a university research competition on 1st June 2023.}
+\thanks{Originally submitted as part of a university research competition on 1st June 2023. Both authors were students at the University of Patras, Greece, at the time.}
 
 \begin{document}
 
@@ -167,30 +167,26 @@
 Accurate disease prediction is vital for timely intervention, 
 effective treatment, and reducing medical complications. 
 While symbolic AI has been applied in healthcare, 
-its adoption remains limited due to the complexity 
-of required knowledge bases.
-This work introduces \sys, a framework that combines Large Language Models (LLMs) 
-with Answer Set Programming (ASP) to overcome this barrier. 
-LLMs extract medical knowledge from text and translate it into ASP code, 
-while ASP enables structured, explainable reasoning. 
-This integration yields a robust, interpretable prediction framework 
-that leverages the strengths of both paradigms. 
-\sys shows strong performance on public datasets.
+its adoption remains limited due to the effort required for constructing high-quality knowledge bases.
+This work introduces \sys, a framework that combines Large Language Models (LLMs) with Answer Set Programming (ASP) to overcome this barrier. 
+\sys orchestrates an LLM to translate medical literature into ASP code, combines it with patient data, and processes it using an ASP solver to arrive at the final diagnosis.
+This integration yields a robust, interpretable prediction framework that leverages the strengths of both paradigms. 
+Preliminary results show \sys has strong performance on small-scale disease diagnosis tasks.
 % \sys accurately predicts diseases based on symptoms derived from medical literature.
 \end{abstract}
 
 \section{Introduction}
 Getting an accurate diagnosis quickly can make all the difference in patient outcomes, 
-but building automated systems that practitioners can actually trust is still a major challenge. 
-Symbolic AI, and in particular Answer Set Programming (ASP), provides clear logical reasoning \cite{Brewka2011,Gelfond_Kahl_2014}. 
+but building automated systems that practitioners can trust is still a major challenge~\cite{Vinarti2019}.
+Symbolic AI, and in particular Answer Set Programming (ASP), provides clear logical reasoning~\cite{Brewka2011,Gelfond_Kahl_2014}
+and has seen success in the medical domain~\cite{Alviano_2020}.
 However, its adoption has been limited because constructing and maintaining large, 
 domain-specific knowledge bases is very labor-intensive.
-On the other hand, Large Language Models (LLMs) achieve strong results on tasks
+On the other hand, Large Language Models (LLMs) have shown strong results on tasks
 such as medical question answering and clinical note summarization \cite{Singhal2022LargeLM,Singhal2023,Zheng2024LLMmed}, 
-but their tendency to produce inconsistent or opaque outputs makes them risky for clinical use~\cite{aljohani2025comprehensivesurveytrustworthinesslarge, rudin2019stopexplainingblackbox}.
+but their tendency to produce inconsistent or opaque outputs makes them risky for clinical use~\cite{aljohani2025comprehensivesurveytrustworthinesslarge,rudin2019stopexplainingblackbox,Bommasani2021}.
 
-In clinical decision support, the real goal is to get the best of both worlds: 
-systems that reason accurately while still being easy for practitioners to trust and use. 
+There is an acute need for clinical support systems that are both interpretable and widely applicable.
 \sys takes a step in that direction by combining the strengths of LLMs and ASP. 
 Instead of requiring experts to hand-craft large knowledge bases, 
 \sys automatically converts medical literature into ASP rules. 
@@ -214,67 +210,65 @@ and concludes with a discussion of limitations and future directions (\cref{sec:
 \section{Background}\label{sec:background}
 
 \paragraph{\textbf{Large Language Models}}
-LLMs \cite{zhao2023survey} are advanced computational systems 
-designed to understand and generate human language. 
-Developed using cutting-edge machine learning techniques, 
-these models can produce text that closely mirrors human linguistic patterns.
-Modern architectures such as \textit{GPT-5}~\cite{gpt5}
-are trained on massive corpora spanning diverse domains, 
+LLMs are advanced computational systems 
+designed to understand and generate human language~\cite{zhao2023survey}. 
+These models can produce text that closely mirrors human linguistic patterns and have emergent reasoning capabilities~\cite{Paranjape2023}.
+Recent models such as \textit{GPT-5}~\cite{gpt5}
+have been trained on massive corpora spanning diverse domains, 
 enabling them to acquire broad, cross-disciplinary knowledge. 
-LLMs use deep learning algorithms \cite{Sarker2021} 
-and specifically transformer networks \cite{Vaswani2017} 
-to analyze and understand the relationships between words, phrases, and sentences. 
+To give an intuition of the way they operate, LLMs are deep neural networks that have converged to transformer networks~\cite{Vaswani2017},
+which are trained using self-supervised learning~\cite{Gui2024surveySSL}.
+During training, these models refine an internal representation that enables them to analyze and understand the relationships between words, phrases, and sentences. 
 By capturing patterns and structures in the training data, 
-they can generate coherent and relevant responses based on given prompts.
-The term ``large" often refers to models with billions of parameters 
-that allow these models to generate context-aware responses. 
-The basic premise of an LLM is its ability to predict 
-the next word (referred to as a token) based on the text it has observed so far, 
-according to the context.
+they can then be probed to generate coherent and relevant responses based on given prompts.
+The term ``large" often refers to models with a large number of parameters (often in the billions)
+that allow these models to build high-quality representations of language.
+At a very basic level, an LLM is able to predict the next word (referred to as a token) based on its preceding context.
 
 % The following examples illustrate how LLMs have supported various applications \cite{Paranjape2023}.
 
 LLMs have demonstrated strong performance across a variety of natural language tasks, 
 including question answering \cite{Brown2020}, summarization \cite{Zhang2020}, 
-dialogue generation \cite{Thoppilan2022lamda}, and code synthesis \cite{Chen2021}. 
+dialogue generation \cite{Thoppilan2022lamda}, and program synthesis \cite{Chen2021}. 
 In specialized domains such as biomedicine, domain-adapted LLMs have been employed 
 for clinical decision support \cite{Singhal2023} and 
 biomedical knowledge retrieval \cite{Luo2022}.
-Among their capabilities, LLMs excel at transforming text from one representation to another, 
-making them powerful tools for a wide range of natural language processing tasks. 
+Among their capabilities, LLMs excel at transforming text from one representation to another~\cite{Vaswani2017,Li2024LLMDataProcessing}.
 This characteristic is particularly relevant to the present work, 
 which focuses on the effective encoding of medical literature. \\
 
 \paragraph{\textbf{Challenges in applying LLMs}}
 
-LLMs are not without errors \cite{Raj2023, Ruis2023}. 
-They can occasionally produce incorrect or biased responses 
-that reflect the biases inherent in the training data. 
+However, LLMs are not without errors~\cite{Raj2023, Ruis2023}. 
+They can occasionally produce incorrect or nonsensical responses 
+\cite{Huang2025SurveyHallucinationLLM}.
 There have been efforts to mitigate these issues 
 through data preprocessing techniques and fine-tuning \cite{Dodge2021}.
 Ongoing research seeks to improve the factual accuracy, safety, and interpretability 
-of these models, enabling their deployment in high-stakes environments \cite{Ganguli2022}. \\
+of these models, enabling their deployment in high-stakes environments \cite{Ganguli2022}.
+This work specifically tackles this issue by grounding LLM outputs on real medical knowledge, and having an ASP solver provide further validation and explainability.
+\\
 
 \paragraph{\textbf{Answer Set Programming}}
 
 Answer Set Programming (ASP) \cite{Eiter2009} is a declarative problem-solving paradigm 
 rooted in logic programming and non-monotonic reasoning \cite{Brewka2011}. 
 The formal semantics of stable models and the foundational ASP language 
-were first introduced by Gelfond and Lifschitz \cite{Gelfond2000, gel88}.
+were first introduced by Gelfond and Lifschitz \cite{gel88}.
 These are implemented in a family of languages commonly known as \textit{AnsProlog} \cite{Gelfond2002}.
 
 The central idea of ASP is to represent a problem 
 declaratively using logical rules, facts, and constraints. 
 These elements collectively form a program that describes the conditions any solution must satisfy. 
-Instead of writing an algorithm to solve the problem, 
-the programmer encodes the specification of valid solutions. 
-An ASP solver then processes this program to compute one or more stable models (also known as answer sets),
+% Instead of writing an algorithm to solve the problem, 
+% the programmer encodes the specification of valid solutions. 
+Given a valid program, an ASP solver processes it to compute one or more stable models (also known as answer sets),
 each of which corresponds to a solution that satisfies all the given rules and constraints.
 
 In traditional programming, transitioning from a problem to a solution 
 requires the programmer's thorough understanding of the given problem, 
-followed by the creation of a program that will produce the correct output 
-when provided with an instance of the problem, which will then be interpreted as the solution. 
+followed by the creation of a program that will take as input an instance of the problem,
+and produce output which will then be interpreted as the solution. 
 In ASP, the process of deriving solutions from a problem specification 
 typically follows a sequence of well-defined steps \cite{Gebser2013}, 
 as illustrated in \cref{fig:asp-solving}. 
@@ -310,18 +304,18 @@ which correspond to the solutions of the original problem.
     \label{fig:asp-solving}
 \end{figure}
 
-Several solvers for ASP have been developed, such as DLV \cite{Xia2020}. 
-This work uses the ASP system \src{clingo}, 
-which integrates the gringo grounder \cite{Gebser2014} with the clasp solver \cite{Holldobler2014} into a single system. 
+Several solvers for ASP have been developed, with some seeing industrial adoption~\cite{Xia2020,Gebser2014}.
+This work uses the Clingo ASP system,
+which integrates the \src{gringo} grounder \cite{Gebser2014} and the \src{clasp} solver \cite{Holldobler2014} into a single pipeline.
 The Clingo system also offers a powerful Python API, enabling integration into other applications.
 
 \section{Related work}
 \paragraph{\textbf{ASP for disease diagnosis}}
-ASP has been used to represent and reason over medical knowledge in a declarative, logic-based manner. 
+ASP has been used in the past to represent and reason over medical knowledge in a declarative, logic-based manner. 
 Early work applied ASP to biomedical ontologies and structured databases to answer complex diagnostic 
 and pharmacological queries with interpretable logical justifications \cite{Erdem2011}. 
 In the clinical domain, ASP is especially effective for encoding medical rules and patient-specific data, 
-enabling precise and explainable decision-making.
+enabling precise and explainable decision-making~\cite{Alviano_2020}
 
 Two common strategies illustrate the role of ASP in medical reasoning. 
 The first is \textit{rule-based representation}, where medical knowledge is expressed as logical statements 
@@ -331,13 +325,15 @@ this supports or excludes the presence of particular diseases.
 The second is \textit{knowledge base construction}, where facts, rules, and constraints 
 are combined into structured repositories that consistently model diagnostic criteria, 
 symptom–disease associations, and therapeutic protocols in an extensible way. 
-Together, these approaches demonstrate how ASP provides a flexible yet rigorous framework 
-for supporting medical diagnosis, offering not only accurate predictions 
-but also transparent reasoning paths that can be trusted in high-stakes settings.\\
+This work builds on these foundations and works towards closing the gap with fully automated knowledge-base construction.
+% Together, these approaches demonstrate how ASP provides a flexible yet rigorous framework 
+% for supporting medical diagnosis, offering not only accurate predictions 
+% but also transparent reasoning paths that can be trusted in high-stakes settings.
+\\
 
 \paragraph{\textbf{Integrating LLMs with ASP}}
 
-More recent work explores the synergy between LLMs and ASP 
+There has been work that explores the synergy between LLMs and ASP 
 for enhanced diagnostic reasoning. 
 These hybrid approaches aim to combine the language understanding of LLMs 
 with the precision and explainability of symbolic reasoning. 
@@ -346,22 +342,21 @@ in extracting structured facts from natural language,
 which are then processed by ASP for logical inference \cite{alviano2024llm2asp}. 
 Other work uses ASP to validate and trace misleading or inconsistent outputs 
 from LLMs in medical contexts \cite{Nguyen2025}. 
-A specialized lightweight LLM has also been trained to generate valid ASP code, 
-improving the automation of rule-based medical reasoning \cite{coppolillo2024llasp}.
-Collectively, these systems assist in building reliable and clear reasoning pipelines 
-for disease diagnosis by combining language understanding with rule-based validation.
+Another work leverages smaller-sized LLMs and uses fine-turning to enhance their performance in generating valid ASP programs~\cite{coppolillo2024llasp}.
+% Collectively, these systems assist in building reliable and clear reasoning pipelines by combining language understanding with rule-based validation.
+These works share several of the same insights and motivations as \sys.
 
 \section{Methodology} \label{sec:methodology}
 
 \paragraph{\textbf{Architecture}}
 
-\Cref{fig:architecture} illustrates the \sys architecture, 
-which transforms unstructured medical text into a structured knowledge base \cite{ré2014feature}. 
+\Cref{fig:architecture} illustrates \sys's architecture, 
+which transforms unstructured medical text into a structured knowledge base. 
 The process begins with the collection of medical literature relevant to the diseases or conditions of interest. 
 A carefully designed prompt is then used to guide an LLM in translating this literature into ASP code, 
 which is incorporated into a growing knowledge base. 
 This knowledge base is further enriched with patient-specific information such as symptoms and examination results. 
-An ASP solver subsequently reasons over the combined knowledge base and produces a diagnosis, or a set of plausible diagnoses.
+An ASP solver subsequently reasons over the combined knowledge base and produces a set of plausible diagnoses.
 
 \begin{figure}[t]
     % https://docs.google.com/drawings/d/1cr2lTIjSUxfQH54CZui8vGqLS2keOfW41i4g4uGfwhw/edit?usp=sharing
@@ -377,11 +372,11 @@ An ASP solver subsequently reasons over the combined knowledge base and produces
 \paragraph{\textbf{Prompt Construction}}
 While Large Language Models exhibit strong instruction-following capabilities, 
 their reliability in high-stakes domains remains limited \cite{bowman2023things}. 
-To improve robustness, a wide range of prompting strategies have been developed 
-and refined over the past several years \cite{liu2021pretrain, promptingguidePromptEngineering}. 
-In \sys, carefully designed prompts are employed to guide the model in translating medical literature 
-into ASP code suitable for execution by a solver (\cref{fig:bad-prompt}, \cref{fig:good-prompt}).
-\footnote{The example of a poorly constructed prompt is included for educational purposes, to highlight common pitfalls in prompt design.}
+To improve robustness, a wide range of prompting strategies are employed by \sys~\cite{liu2021pretrain, promptingguidePromptEngineering}.
+In \sys, carefully designed prompts are employed to guide the model in translating medical literature.
+This involves a careful and accurate description of the desired output format, and specific instructions on the kind of information to encode within it.
+\Cref{fig:bad-prompt} represents an example of a poorly constructed prompt that fails to yield satisfactory results,
+and \cref{fig:good-prompt} shows the prompt that \sys ultimately uses to convert medical text into ASP code.
 
 \begin{figure}[!h]
 \centering
@@ -469,7 +464,6 @@ The knowledge base is initialized with a set of symptoms and medical indicators 
     indicator(i). & \; i \in \{ \text{low MCV, high TIBC}, \dots \}
 \end{align}
 Let $S$ denote the set of symptoms and $I$ the set of indicators.
-
 A patient exhibiting a specific symptom or testing positive for an indicator is represented as:
 \begin{equation}
     has(x). \; x \in S \cup I
@@ -521,15 +515,21 @@ relying as much as possible on available clinical data rather than hypothetical 
 
 \paragraph{\textbf{Diagnostic Explainability}}
 
-Symbolic Artificial Intelligence offers a significant advantage 
-over subsymbolic methods in terms of explainability. 
+Symbolic AI offers a significant advantage 
+over sub-symbolic methods in terms of explainability. 
 In symbolic systems, the relationships between facts and conclusions are explicitly defined, 
-enabling transparent reasoning. Prior work has explored methods for associating logical propositions 
-with their justifications \cite{cabalar2014causal}. For example, 
-the logic program shown below is accompanied by a causal graph 
-in \cref{fig:causal-g}, which illustrates the connections 
+enabling transparent reasoning.
+Thus, it possible to associate logical propositions with their justifications~\cite{cabalar2014causal}.
+For example, 
+the logic program shown in \cref{eq:example-cg} is accompanied by a causal graph 
+shown in \cref{fig:causal-g}, which illustrates the connections 
 between rules and their inferred outcomes. 
 This structure supports the interpretability of conclusions derived by a symbolic logic solver.
+The tool \src{xclingo}~\cite{Cabalar_2020} 
+enables the visualization of justifications for results produced by the \src{clingo} solver. 
+It does so by incorporating a trace that corresponds to the rules of the logic program. 
+\sys leverages this produce such a trace, which can then help identify the reasoning path, as well as potential flaws in \sys's knowledge base and reasoning process.
+
 % \begin{equation}
 % \begin{aligned}[b]
 %     l :& punish \longleftarrow drive, drunk \\
@@ -571,16 +571,10 @@ This structure supports the interpretability of conclusions derived by a symboli
     \label{fig:causal-g}
     \end{minipage}
 \end{figure}
-    
-
-The tool \src{xclingo}~\cite{Cabalar_2020} 
-enables the visualization of justifications for results produced by the \src{clingo} solver. 
-It does so by incorporating a trace that corresponds to the rules of the logic program. 
-This can help identify potential flaws in \sys's knowledge base and reasoning process.
 
 \section{Results}\label{sec:results}
 
-Evaluation was conducted using a publicly available dataset.\footnote{\url{https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset?select=dataset.csv}}
+Evaluation was conducted using a publicly available dataset.\footnote{\url{https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset}}
 Each record's list of symptoms serves as input.  
 The knowledge base—comprising ASP rules automatically derived  
 from medical literature—infers potential diagnoses.  
@@ -603,13 +597,9 @@ by the ASP solver matches the actual diagnosis listed in the dataset.
 \end{table}
 
 High accuracy is achieved when the knowledge base includes a sufficiently 
-rich set of logical rules. The size of this base, measured as the number 
-of ASP terms associated with a disease, correlates with prediction performance.
-
-In addition to accurate predictions, \sys offers explainability 
-through integration with \src{xclingo}. 
-This tool visualizes the reasoning process behind each diagnosis, 
-revealing the logical path from symptoms to conclusion.
+rich set of logical rules.
+% The size of this base, measured as the number of ASP terms associated with a disease, correlates with prediction performance.
+In addition to accurate predictions, \sys offers explainability and visualizes the reasoning process behind each diagnosis~(an example is shown in \cref{lst:chickenpox-explanation}).
 
 \begin{lstlisting}[caption={Excerpt from the explanation tree for the chickenpox diagnosis. The structure illustrates the reasoning path based on symptom associations (slightly modified for clarity).},
     label=lst:chickenpox-explanation]{Name}
@@ -656,9 +646,9 @@ The architecture, prompt design, and rule structuring in the knowledge base are 
 Experiments show that \sys can predict diseases accurately 
 while keeping the reasoning process transparent.
 
-Future work will focus on grounding ASP rules in reliable sources 
-through retrieval-augmented generation, fine-tuning LLMs for clinical reasoning, 
-and scaling the framework to cover a wider range of diseases.
+Future work will focus on scaling this process across more sources, 
+formalizing the pipeline to enable auditability and pluggability,
+and further experimentation in augmenting each step with additional guardrails, possibly including fine-tuning.
 \newpage
 
 \bibliographystyle{unsrt}
