@@ -14,7 +14,7 @@ the program and produces a final diagnosis based on each patient’s data.
 
 ## Citation
 
-If you use this repository or build upon this work, please cite our paper:
+If you use this repository or build upon this work, please use this citation:
 
 ```bibtex
 @misc{gemou2025proofofconceptexplainablediseasediagnosis,
